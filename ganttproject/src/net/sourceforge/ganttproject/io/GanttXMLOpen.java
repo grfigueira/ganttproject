@@ -63,7 +63,7 @@ public class GanttXMLOpen implements GPParser {
   private int ganttDividerLocation;
 
   private int resourceDividerLocation;
-
+  private int resourceDividerLocation2;
   private PrjInfos myProjectInfo = null;
 
   private UIFacade myUIFacade = null;
@@ -101,6 +101,7 @@ public class GanttXMLOpen implements GPParser {
     myUIFacade.setGanttDividerLocation(ganttDividerLocation);
     if (resourceDividerLocation != 0) {
       myUIFacade.setResourceDividerLocation(resourceDividerLocation);
+      myUIFacade.setResourceDividerLocation2(resourceDividerLocation2);
     }
     return true;
 
@@ -181,6 +182,8 @@ public class GanttXMLOpen implements GPParser {
               ganttDividerLocation = new Integer(attrs.getValue(i)).intValue();
             } else if (aName.equals("resource-divider-location")) {
               resourceDividerLocation = new Integer(attrs.getValue(i)).intValue();
+            } else if (aName.equals("resource-divider-location2")) {
+              resourceDividerLocation2 = new Integer(attrs.getValue(i)).intValue();
             }
           } else if (eName.equals("tasks")) {
             if ("empty-milestones".equals(aName)) {

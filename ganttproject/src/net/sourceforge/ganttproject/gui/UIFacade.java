@@ -127,8 +127,11 @@ public interface UIFacade {
   void setGanttDividerLocation(int location);
 
   int getResourceDividerLocation();
+  int getResourceDividerLocation2();
+
 
   void setResourceDividerLocation(int location);
+  void setResourceDividerLocation2(int location);
 
   /** Refreshes the UI (ie repaints all tasks in the chart) */
   void refresh();

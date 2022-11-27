@@ -128,6 +128,7 @@ public class GanttProject extends GanttProjectBase implements ResourceView, Gant
    * GanttPeoplePanel to edit person that work on the project
    */
   private GanttResourcePanel resp;
+  private GanttResourcePanel resp2;
 
   private final EditMenu myEditMenu;
 
@@ -174,6 +175,7 @@ public class GanttProject extends GanttProjectBase implements ResourceView, Gant
   private GanttChartTabContentPanel myGanttChartTabContent;
 
   private ResourceChartTabContentPanel myResourceChartTabContent;
+  private ResourceChartTabContentPanel myResourceChartTabContent2;
 
   private List<RowHeightAligner> myRowHeightAligners = Lists.newArrayList();
 
@@ -353,6 +355,11 @@ public class GanttProject extends GanttProjectBase implements ResourceView, Gant
         getResourcePanel().area);
     getViewManager().createView(myResourceChartTabContent, new ImageIcon(getClass().getResource("/icons/res_16.gif")));
     getViewManager().toggleVisible(myResourceChartTabContent);
+
+    myResourceChartTabContent2 = new ResourceChartTabContentPanel(getProject(), getUIFacade(), getResourcePanel2(),
+            getResourcePanel2().area);
+   getViewManager().createView(myResourceChartTabContent2, new ImageIcon(getClass().getResource("/icons/res_16.gif")));
+    getViewManager().toggleVisible(myResourceChartTabContent2);
 
     addComponentListener(new ComponentAdapter() {
       @Override
@@ -658,6 +665,7 @@ public class GanttProject extends GanttProjectBase implements ResourceView, Gant
     // deleteAction);
     UIUtil.registerActions(myGanttChartTabContent.getComponent(), true, newAction, propertiesAction, deleteAction);
     UIUtil.registerActions(myResourceChartTabContent.getComponent(), true, newAction, propertiesAction, deleteAction);
+    UIUtil.registerActions(myResourceChartTabContent2.getComponent(), true, newAction, propertiesAction, deleteAction);
     getTabs().addChangeListener(new ChangeListener() {
       @Override
       public void stateChanged(ChangeEvent e) {
@@ -719,6 +727,16 @@ public class GanttProject extends GanttProjectBase implements ResourceView, Gant
       getStatusBar().setSecondText(
           language.getCorrectedLabel("task") + " : " + getTaskManager().getTaskCount() + "  "
               + language.getCorrectedLabel("resources") + " : " + resp.nbPeople());
+    }
+  }
+
+  public void refreshProjectInformation2() {
+    if (getTaskManager().getTaskCount() == 0 && resp2.nbPeople() == 0) {
+      getStatusBar().setSecondText("");
+    } else {
+      getStatusBar().setSecondText(
+              language.getCorrectedLabel("task") + " : " + getTaskManager().getTaskCount() + "  "
+                      + language.getCorrectedLabel("resources") + " : " + resp2.nbPeople());
     }
   }
 
@@ -900,6 +918,16 @@ public class GanttProject extends GanttProjectBase implements ResourceView, Gant
       getHumanResourceManager().addView(this.resp);
     }
     return this.resp;
+  }
+
+  public GanttResourcePanel getResourcePanel2() {
+    if (this.resp2 == null) {
+      this.resp2 = new GanttResourcePanel(this, getUIFacade());
+      this.resp2.init();
+      myRowHeightAligners.add(this.resp2.getRowHeightAligner());
+      getHumanResourceManager().addView(this.resp2);
+    }
+    return this.resp2;
   }
 
   public GanttGraphicArea getArea() {
@@ -1203,12 +1231,14 @@ public class GanttProject extends GanttProjectBase implements ResourceView, Gant
       getUIFacade().setStatusText(description);
       setAskForSave(true);
       refreshProjectInformation();
+      refreshProjectInformation2();
     }
   }
 
   @Override
   public void resourcesRemoved(ResourceEvent event) {
     refreshProjectInformation();
+    refreshProjectInformation2();
     setAskForSave(true);
   }
 
@@ -1249,10 +1279,18 @@ public class GanttProject extends GanttProjectBase implements ResourceView, Gant
   public int getResourceDividerLocation() {
     return myResourceChartTabContent.getDividerLocation();
   }
+  public int getResourceDividerLocation2() {
+    return myResourceChartTabContent2.getDividerLocation();
+  }
+
 
   @Override
   public void setResourceDividerLocation(int location) {
     myResourceChartTabContent.setDividerLocation(location);
+  }
+
+  public void setResourceDividerLocation2(int location) {
+    myResourceChartTabContent2.setDividerLocation(location);
   }
 
   @Override

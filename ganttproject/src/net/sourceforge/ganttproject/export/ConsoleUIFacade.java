@@ -165,8 +165,18 @@ public class ConsoleUIFacade implements UIFacade {
   }
 
   @Override
+  public int getResourceDividerLocation2() {
+    return 0;
+  }
+
+  @Override
   public void setResourceDividerLocation(int location) {
     // TODO Auto-generated method stub
+  }
+
+  @Override
+  public void setResourceDividerLocation2(int location) {
+
   }
 
   @Override

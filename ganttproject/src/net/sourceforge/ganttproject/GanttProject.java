@@ -174,6 +174,7 @@ public class GanttProject extends GanttProjectBase implements ResourceView, User
 
   private ResourceChartTabContentPanel myResourceChartTabContent;
   private ResourceChartTabContentPanel myResourceChartTabContent2;
+  private UserStoryChartTabContentPanel myUserStoryChartTabContent;
 
   private List<RowHeightAligner> myRowHeightAligners = Lists.newArrayList();
 
@@ -361,10 +362,19 @@ public class GanttProject extends GanttProjectBase implements ResourceView, User
     getViewManager().createView(myResourceChartTabContent, new ImageIcon(getClass().getResource("/icons/res_16.gif")));
     getViewManager().toggleVisible(myResourceChartTabContent);
 
-    myResourceChartTabContent2 = new ResourceChartTabContentPanel(getProject(), getUIFacade(), getResourcePanel2(),
-            getResourcePanel2().area);
-   getViewManager().createView(myResourceChartTabContent2, new ImageIcon(getClass().getResource("/icons/res_16.gif")));
+
+    myResourceChartTabContent2 = new ResourceChartTabContentPanel(getProject(), getUIFacade(), getResourcePanel(),
+            getResourcePanel().area);
+    getViewManager().createView(myResourceChartTabContent2, new ImageIcon(getClass().getResource("/icons/res_16.gif")));
     getViewManager().toggleVisible(myResourceChartTabContent2);
+
+    //Added @Catarina
+    myUserStoryChartTabContent = new UserStoryChartTabContentPanel(getProject(), getUIFacade(), getResourcePanel(),
+            getResourcePanel().area);
+    getViewManager().createView(myUserStoryChartTabContent, new ImageIcon(getClass().getResource("/icons/res_16.gif")));
+    getViewManager().toggleVisible(myUserStoryChartTabContent);
+
+
 
     addComponentListener(new ComponentAdapter() {
       @Override
@@ -736,12 +746,12 @@ public class GanttProject extends GanttProjectBase implements ResourceView, User
   }
 
   public void refreshProjectInformation2() {
-    if (getTaskManager().getTaskCount() == 0 && resp2.nbPeople() == 0) {
+    if (getTaskManager().getTaskCount() == 0 && usp.nbPeople() == 0) {
       getStatusBar().setSecondText("");
     } else {
       getStatusBar().setSecondText(
               language.getCorrectedLabel("task") + " : " + getTaskManager().getTaskCount() + "  "
-                      + language.getCorrectedLabel("resources") + " : " + resp2.nbPeople());
+                      + language.getCorrectedLabel("resources") + " : " + usp.nbPeople());
     }
   }
 
@@ -1148,6 +1158,15 @@ public class GanttProject extends GanttProjectBase implements ResourceView, User
       myHumanResourceManager.addView(this);
     }
     return myHumanResourceManager;
+  }
+
+  @Override
+  public UserStoryManager getUserStoryManager() {
+    if (myUserStoryManager == null) {
+      myUserStoryManager = new UserStoryManager(getResourceCustomPropertyManager());
+      myUserStoryManager.addView(this);
+    }
+    return myUserStoryManager;
   }
 
   @Override

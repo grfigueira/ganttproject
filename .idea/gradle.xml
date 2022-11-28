@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="delegatedBuild" value="true" />
+        <option name="testRunner" value="GRADLE" />
+        <option name="distributionType" value="LOCAL" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/ganttproject-builder" />
+        <option name="gradleHome" value="$PROJECT_DIR$/../../../Gradle47/gradle-4.7" />
+        <option name="gradleJvm" value="1.8" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/biz.ganttproject.core" />
+            <option value="$PROJECT_DIR$/biz.ganttproject.impex.ical" />
+            <option value="$PROJECT_DIR$/biz.ganttproject.impex.msproject2" />
+            <option value="$PROJECT_DIR$/ganttproject" />
+            <option value="$PROJECT_DIR$/ganttproject-builder" />
+            <option value="$PROJECT_DIR$/ganttproject-tester" />
+            <option value="$PROJECT_DIR$/org.ganttproject.chart.pert" />
+            <option value="$PROJECT_DIR$/org.ganttproject.impex.htmlpdf" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>

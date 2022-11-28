@@ -295,7 +295,7 @@ public class UserStoryTreeTableModel extends DefaultTreeTableModel {
         }
     }
 
-    public void resourceChanged(UserStory us) {
+    public void userStoryChanged(UserStory us) {
         UserStoryNode node = getNodeForUserStory(us);
         if (node == null) {
             return;

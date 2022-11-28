@@ -25,45 +25,47 @@ import net.sourceforge.ganttproject.gui.UIFacade;
 import net.sourceforge.ganttproject.resource.AssignmentContext;
 import net.sourceforge.ganttproject.resource.HumanResourceManager;
 import net.sourceforge.ganttproject.resource.ResourceContext;
+import net.sourceforge.ganttproject.userStory.UserStory;
 import net.sourceforge.ganttproject.userStory.UserStoryContext;
 import net.sourceforge.ganttproject.userStory.UserStoryManager;
 
 import javax.swing.*;
+import java.awt.*;
 
 //Added @Catarina
 public class UserStoryActionSet {
     private final UserStoryNewAction myUserStoryNewAction;
 
-    /*private final ResourceDeleteAction myResourceDeleteAction;
+    private final UserStoryDeleteAction myUserStoryDeleteAction;
 
-    private final ResourcePropertiesAction myResourcePropertiesAction;
+    private final UserStoryPropertiesAction myUserStoryPropertiesAction;
 
-    private final ResourceMoveUpAction myResourceMoveUpAction;
+    private final UserStoryMoveUpAction myUserStoryMoveUpAction;
 
-    private final ResourceMoveDownAction myResourceMoveDownAction;
+    private final UserStoryMoveDownAction myUserStoryMoveDownAction;
 
-    private final ResourceSendMailAction myResourceSendMailAction;
+    /*private final ResourceSendMailAction myResourceSendMailAction;
 
     private final AssignmentDeleteAction myAssignmentDelete;*/
 
     private AbstractAction[] myActions;
 
-    public UserStoryActionSet(UserStoryContext resourceContext, AssignmentContext assignmentContext,
+    public UserStoryActionSet(UserStoryContext userStoryContext,
                               GanttProject projectFrame, UIFacade uiFacade, UserStoryTreeTable table) {
         UserStoryManager manager = projectFrame.getUserStoryManager();
         myUserStoryNewAction = new UserStoryNewAction(manager, uiFacade);
-        /*myResourceDeleteAction = new ResourceDeleteAction(manager, resourceContext, projectFrame, uiFacade);
-        myResourcePropertiesAction = new ResourcePropertiesAction(projectFrame, resourceContext, uiFacade);
-        myResourceMoveUpAction = new ResourceMoveUpAction(table);
-        myResourceMoveDownAction = new ResourceMoveDownAction(table);
-        myResourceSendMailAction = new ResourceSendMailAction(table);
+        myUserStoryDeleteAction = new UserStoryDeleteAction(manager, userStoryContext, projectFrame, uiFacade);
+        myUserStoryPropertiesAction = new UserStoryPropertiesAction(projectFrame, userStoryContext, uiFacade);
+        myUserStoryMoveUpAction = new UserStoryMoveUpAction(table);
+        myUserStoryMoveDownAction = new UserStoryMoveDownAction(table);
+        /*myResourceSendMailAction = new ResourceSendMailAction(table);
         myAssignmentDelete = new AssignmentDeleteAction(assignmentContext, uiFacade);*/
     }
 
     public AbstractAction[] getActions() {
         if (myActions == null) {
             myUserStoryNewAction.putValue(Action.SHORT_DESCRIPTION, null);
-            //myResourcePropertiesAction.putValue(Action.SHORT_DESCRIPTION, null);
+            myUserStoryPropertiesAction.putValue(Action.SHORT_DESCRIPTION, null);
             //myResourceSendMailAction.putValue(Action.SHORT_DESCRIPTION, null);
             myActions = new AbstractAction[] { myUserStoryNewAction };
         }
@@ -74,27 +76,24 @@ public class UserStoryActionSet {
         return myUserStoryNewAction;
     }
 
-    /*public ResourceDeleteAction getResourceDeleteAction() {
-        return myResourceDeleteAction;
+
+    public UserStoryDeleteAction getUserStoryDeleteAction() {
+        return myUserStoryDeleteAction;
     }
 
-    public ResourcePropertiesAction getResourcePropertiesAction() {
-        return myResourcePropertiesAction;
+    public UserStoryPropertiesAction getUserStoryPropertiesAction() {
+        return myUserStoryPropertiesAction;
     }
 
-    public ResourceMoveUpAction getResourceMoveUpAction() {
-        return myResourceMoveUpAction;
+    public UserStoryMoveUpAction getUserStoryMoveUpAction() {
+        return myUserStoryMoveUpAction;
     }
 
-    public ResourceMoveDownAction getResourceMoveDownAction() {
-        return myResourceMoveDownAction;
+    public UserStoryMoveDownAction getUserStoryMoveDownAction() {
+        return myUserStoryMoveDownAction;
     }
 
-    public ResourceSendMailAction getResourceSendMailAction() {
-        return myResourceSendMailAction;
-    }
-
-    public AssignmentDeleteAction getAssignmentDelete() {
+    /*public AssignmentDeleteAction getAssignmentDelete() {
         return myAssignmentDelete;
     }*/
 }

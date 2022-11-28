@@ -41,6 +41,7 @@ import net.sourceforge.ganttproject.action.edit.EditMenu;
 import net.sourceforge.ganttproject.action.help.HelpMenu;
 import net.sourceforge.ganttproject.action.project.ProjectMenu;
 import net.sourceforge.ganttproject.action.resource.ResourceActionSet;
+import net.sourceforge.ganttproject.action.userStory.UserStoryActionSet;
 import net.sourceforge.ganttproject.action.view.ViewCycleAction;
 import net.sourceforge.ganttproject.action.view.ViewMenu;
 import net.sourceforge.ganttproject.action.zoom.ZoomActionSet;
@@ -153,6 +154,11 @@ public class GanttProject extends GanttProjectBase implements ResourceView, User
   public boolean isOnlyViewer;
 
   private final ResourceActionSet myResourceActions;
+
+  //Added @Catarina
+  private final UserStoryActionSet myUserStoryActions;
+
+  private final GanttUserStoryPanel myUserSPanel;
 
   private final ZoomActionSet myZoomActions;
 
@@ -312,7 +318,11 @@ public class GanttProject extends GanttProjectBase implements ResourceView, User
     scrollingManager.addScrollingListener(getResourcePanel().area.getViewState());
 
     System.err.println("3. creating menus...");
+    myUserSPanel = getUserStoryPanel();
     myResourceActions = getResourcePanel().getResourceActionSet();
+
+    myUserStoryActions = getUserStoryPanel().getUserStoryActionSet(); //Added @Catarina
+
     myZoomActions = new ZoomActionSet(getZoomManager());
     JMenuBar bar = new JMenuBar();
     setJMenuBar(bar);
@@ -347,6 +357,13 @@ public class GanttProject extends GanttProjectBase implements ResourceView, User
     }
     mHuman.add(myResourceActions.getResourceSendMailAction());
     bar.add(mHuman);
+
+    //Added @Catarina - adds things to the bar
+    JMenu mUserStory = UIUtil.createTooltiplessJMenu(GPAction.createVoidAction("us"));
+    /*for (AbstractAction a : myUserStoryActions.getActions()) {
+      mUserStory.add(a);
+    }*/
+    bar.add(mUserStory);
 
     HelpMenu helpMenu = new HelpMenu(getProject(), getUIFacade(), getProjectUIFacade());
     bar.add(helpMenu.createMenu());
@@ -799,6 +816,7 @@ public class GanttProject extends GanttProjectBase implements ResourceView, User
     fireProjectOpened();
   }
 
+
   public void openStartupDocument(String path) {
     if (path != null) {
       final Document document = getDocumentManager().getDocument(path);
@@ -945,6 +963,7 @@ public class GanttProject extends GanttProjectBase implements ResourceView, User
       myRowHeightAligners.add(this.usp.getRowHeightAligner());
       getUserStoryManager().addView(this.usp);
     }
+    System.err.print("Done");
     return this.usp;
   }
 
@@ -1289,13 +1308,13 @@ public class GanttProject extends GanttProjectBase implements ResourceView, User
       }
       getUIFacade().setStatusText(description);
       setAskForSave(true);
-      refreshProjectInformation();
+      refreshProjectInformation2();
     }
   }
 
   @Override
   public void userStoryRemoved(UserStoryEvent event) {
-    refreshProjectInformation();
+    refreshProjectInformation2();
     setAskForSave(true);
   }
 

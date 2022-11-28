@@ -88,6 +88,26 @@ public interface Task extends MutableTask {
     }
   }
 
+  public enum taskType {
+
+    PROGRAMMING("#fc031c"), PLANNING("#fff52e");
+
+    private final String typeColor;
+
+    private taskType(String color){
+      typeColor = color;
+    }
+
+    public String getTypeColor(){
+      return typeColor;
+    }
+
+    public String getTypeLowerString(){
+      return this.toString().toLowerCase();
+    }
+
+  }
+
   /** Default priority (for new tasks) */
   public static final Priority DEFAULT_PRIORITY = Priority.NORMAL;
 

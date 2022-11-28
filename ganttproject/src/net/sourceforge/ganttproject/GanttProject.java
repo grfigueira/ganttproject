@@ -363,7 +363,7 @@ public class GanttProject extends GanttProjectBase implements ResourceView, User
     getViewManager().toggleVisible(myResourceChartTabContent);
 
 
-    myResourceChartTabContent2 = new ResourceChartTabContentPanel(getProject(), getUIFacade(), getResourcePanel(),
+    /*myResourceChartTabContent2 = new ResourceChartTabContentPanel(getProject(), getUIFacade(), getResourcePanel(),
             getResourcePanel().area);
     getViewManager().createView(myResourceChartTabContent2, new ImageIcon(getClass().getResource("/icons/res_16.gif")));
     getViewManager().toggleVisible(myResourceChartTabContent2);
@@ -371,9 +371,9 @@ public class GanttProject extends GanttProjectBase implements ResourceView, User
     //Added @Catarina
     myUserStoryChartTabContent = new UserStoryChartTabContentPanel(getProject(), getUIFacade(), getResourcePanel(),
             getResourcePanel().area);
-    getViewManager().createView(myUserStoryChartTabContent, new ImageIcon(getClass().getResource("/icons/res_16.gif")));
+    getViewManager().createView(myUserStoryChartTabContent, new ImageIcon(getClass().getResource("/icons/about_16.gif")));
     getViewManager().toggleVisible(myUserStoryChartTabContent);
-
+*/
 
 
     addComponentListener(new ComponentAdapter() {

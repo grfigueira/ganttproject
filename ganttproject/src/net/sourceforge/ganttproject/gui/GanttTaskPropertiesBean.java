@@ -97,6 +97,8 @@ public class GanttTaskPropertiesBean extends JPanel {
 
   private JComboBox priorityComboBox;
 
+  private JComboBox taskTypeComboBox;
+
   private JCheckBox myEarliestBeginEnabled;
 
   private JCheckBox mileStoneCheckBox1;
@@ -133,6 +135,8 @@ public class GanttTaskPropertiesBean extends JPanel {
   private int originalCompletionPercentage;
 
   private Task.Priority originalPriority;
+
+  private Task.TaskType originalTaskType;
 
   private ShapePaint originalShape;
 
@@ -201,6 +205,16 @@ public class GanttTaskPropertiesBean extends JPanel {
     }
     priorityComboBox.setEditable(false);
     propertiesPanel.add(priorityComboBox);
+
+    // Task type combo box.
+    // Added @Guilherme
+    propertiesPanel.add(new JLabel("Task Type"));
+    taskTypeComboBox = new JComboBox();
+    for (Task.TaskType p : Task.TaskType.values()) {
+      taskTypeComboBox.addItem(p.getTypeLowerString());
+    }
+    taskTypeComboBox.setEditable(false);
+    propertiesPanel.add(taskTypeComboBox);
 
     propertiesPanel.add(new JLabel(language.getText("advancement")));
     SpinnerNumberModel spinnerModel = new SpinnerNumberModel(0, 0, 100, 1);
@@ -424,6 +438,9 @@ public class GanttTaskPropertiesBean extends JPanel {
       if (this.originalPriority != getPriority()) {
         mutator.setPriority(getPriority());
       }
+      if(this.originalTaskType != getTaskType()) {
+        mutator.setTaskType(getTaskType());
+      }
       mutator.setColor(myTaskColorOption.getValue());
       if (this.originalShape == null && shapeComboBox.getSelectedIndex() != 0 || originalShape != null
           && !this.originalShape.equals(shapeComboBox.getSelectedPaint())) {
@@ -452,6 +469,7 @@ public class GanttTaskPropertiesBean extends JPanel {
 
     percentCompleteSlider.setValue(new Integer(originalCompletionPercentage));
     priorityComboBox.setSelectedIndex(originalPriority.ordinal());
+    taskTypeComboBox.setSelectedIndex(originalTaskType.ordinal());
 
     myTaskScheduleDates.setUnpluggedClone(myUnpluggedClone);
     DateValidator validator = UIUtil.DateValidator.Default.aroundProjectStart(myProject.getTaskManager().getProjectStart());
@@ -534,6 +552,8 @@ public class GanttTaskPropertiesBean extends JPanel {
     return Task.Priority.getPriority(priorityComboBox.getSelectedIndex());
   }
 
+  private Task.TaskType getTaskType(){return Task.TaskType.getTaskType(taskTypeComboBox.getSelectedIndex());}
+
   private GanttCalendar getStart() {
     return myTaskScheduleDates.getStart();
   }
@@ -566,6 +586,7 @@ public class GanttTaskPropertiesBean extends JPanel {
     originalNotes = task.getNotes();
     originalCompletionPercentage = task.getCompletionPercentage();
     originalPriority = task.getPriority();
+    originalTaskType = task.getTaskType();
     originalShape = task.getShape();
     originalEarliestBeginDate = task.getThird();
     originalEarliestBeginEnabled = task.getThirdDateConstraint();

@@ -88,18 +88,23 @@ public interface Task extends MutableTask {
     }
   }
 
-  public enum taskType {
+  public enum TaskType {
+    // #fc031c                  #fff52e
+    PROGRAMMING("0"), PLANNING("1"), OTHER("2");
 
-    PROGRAMMING("#fc031c"), PLANNING("#fff52e");
+    private final String myPersistentValue;
 
-    private final String typeColor;
-
-    private taskType(String color){
-      typeColor = color;
+    private TaskType(String persistentValue){
+      myPersistentValue = persistentValue;
     }
 
-    public String getTypeColor(){
-      return typeColor;
+    public static TaskType getTaskType(int value) {
+      for (Task.TaskType p : Task.TaskType.values()) {
+        if (p.ordinal() == value) {
+          return p;
+        }
+      }
+      return DEFAULT_TASK_TYPE;
     }
 
     public String getTypeLowerString(){
@@ -110,6 +115,7 @@ public interface Task extends MutableTask {
 
   /** Default priority (for new tasks) */
   public static final Priority DEFAULT_PRIORITY = Priority.NORMAL;
+  public static final TaskType DEFAULT_TASK_TYPE = TaskType.OTHER;
 
   public static interface Cost {
     BigDecimal getValue();
@@ -135,6 +141,8 @@ public interface Task extends MutableTask {
   boolean isMilestone();
 
   Priority getPriority();
+
+  TaskType getTaskType();
 
   List<TaskActivity> getActivities();
 

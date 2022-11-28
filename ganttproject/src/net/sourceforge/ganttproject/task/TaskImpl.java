@@ -84,6 +84,8 @@ public class TaskImpl implements Task {
 
   private Priority myPriority;
 
+  private TaskType myType;
+
   private GanttCalendar myStart;
 
   private GanttCalendar myEnd;
@@ -149,6 +151,7 @@ public class TaskImpl implements Task {
     myDependencySliceAsDependant = new TaskDependencySliceAsDependant(this, myManager.getDependencyCollection());
     myDependencySliceAsDependee = new TaskDependencySliceAsDependee(this, myManager.getDependencyCollection());
     myPriority = DEFAULT_PRIORITY;
+    myType = DEFAULT_TASK_TYPE;
     myTaskHierarchyItem = myManager.getHierarchyManager().createItem(this);
     myNotes = "";
     bExpand = true;
@@ -175,6 +178,7 @@ public class TaskImpl implements Task {
     isMilestone = copy.isMilestone;
     isProjectTask = copy.isProjectTask;
     myPriority = copy.myPriority;
+    myType = copy.myType;
     myStart = copy.myStart;
     myEnd = copy.myEnd;
     myThird = copy.myThird;
@@ -344,6 +348,11 @@ public class TaskImpl implements Task {
   @Override
   public Priority getPriority() {
     return myPriority;
+  }
+
+  @Override
+  public TaskType getTaskType() {
+    return myType;
   }
 
   @Override
@@ -726,6 +735,16 @@ public class TaskImpl implements Task {
     }
 
     @Override
+    public void setTaskType(final TaskType type) {
+      myCommands.add(new Runnable() {
+        @Override
+        public void run() {
+          TaskImpl.this.setTaskType(type);
+        }
+      });
+    }
+
+    @Override
     public void setStart(final GanttCalendar start) {
       assert start != null;
       GanttCalendar currentStart = getStart();
@@ -959,6 +978,11 @@ public class TaskImpl implements Task {
   @Override
   public void setPriority(Priority priority) {
     myPriority = priority;
+  }
+
+  @Override
+  public void setTaskType(TaskType type) {
+    myType = type;
   }
 
   @Override

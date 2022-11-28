@@ -212,6 +212,11 @@ public class ConsoleUIFacade implements UIFacade {
     return myRealFacade.getResourceTree();
   }
 
+  //Added @Catarina
+  @Override
+  public UserStoryTreeUIFacade getUserStoryTree() { return myRealFacade.getUserStoryTree(); }
+
+
   @Override
   public TaskSelectionContext getTaskSelectionContext() {
     // TODO Auto-generated method stub

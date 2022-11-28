@@ -61,6 +61,7 @@ import net.sourceforge.ganttproject.task.TaskSelectionManager;
 import net.sourceforge.ganttproject.task.TaskView;
 import net.sourceforge.ganttproject.undo.GPUndoManager;
 import net.sourceforge.ganttproject.undo.UndoManagerImpl;
+import net.sourceforge.ganttproject.userStory.UserStoryManager;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -437,6 +438,10 @@ abstract class GanttProjectBase extends JFrame implements IGanttProject, UIFacad
 
   @Override
   public abstract HumanResourceManager getHumanResourceManager();
+
+  //Added @Catarina
+  @Override
+  public abstract UserStoryManager getUserStoryManager();
 
   @Override
   public abstract RoleManager getRoleManager();

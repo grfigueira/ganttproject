@@ -15,6 +15,7 @@ import biz.ganttproject.core.option.ColorOption;
 import biz.ganttproject.core.time.TimeUnitStack;
 import net.sourceforge.ganttproject.gui.NotificationManager;
 import net.sourceforge.ganttproject.resource.HumanResourceManager;
+import net.sourceforge.ganttproject.userStory.UserStoryManager;
 
 import java.awt.*;
 import java.net.URL;
@@ -32,6 +33,8 @@ public interface TaskManagerConfig {
   TimeUnitStack getTimeUnitStack();
 
   HumanResourceManager getResourceManager();
+
+  UserStoryManager getUserStoryManager();
 
   URL getProjectDocumentURL();
 

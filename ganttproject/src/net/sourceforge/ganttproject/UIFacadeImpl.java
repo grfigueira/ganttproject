@@ -507,6 +507,9 @@ class UIFacadeImpl extends ProgressProvider implements UIFacade {
   }
 
   @Override
+  public UserStoryTreeUIFacade getUserStoryTree() { return myFallbackDelegate.getUserStoryTree(); }
+
+  @Override
   public TaskSelectionContext getTaskSelectionContext() {
     return myTaskSelectionManager;
   }

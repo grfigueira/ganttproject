@@ -39,6 +39,7 @@ import net.sourceforge.ganttproject.task.Task;
 import net.sourceforge.ganttproject.task.TaskContainmentHierarchyFacade;
 import net.sourceforge.ganttproject.task.TaskManager;
 import net.sourceforge.ganttproject.task.TaskManagerConfig;
+import net.sourceforge.ganttproject.userStory.UserStoryManager;
 
 import java.awt.*;
 import java.io.IOException;
@@ -54,6 +55,7 @@ public class GanttProjectImpl implements IGanttProject {
   private String myWebLink;
   private final TaskManager myTaskManager;
   private final HumanResourceManager myResourceManager;
+  private final UserStoryManager myUserStoryManager; //Added @Catarina
   private final TaskManagerConfigImpl myTaskManagerConfig;
   private Document myDocument;
   private final List<ProjectEventListener> myListeners = new ArrayList<ProjectEventListener>();
@@ -65,7 +67,8 @@ public class GanttProjectImpl implements IGanttProject {
   public GanttProjectImpl() {
     myResourceManager = new HumanResourceManager(RoleManager.Access.getInstance().getDefaultRole(),
         new CustomColumnsManager());
-    myTaskManagerConfig = new TaskManagerConfigImpl(myResourceManager, myCalendar, GanttLanguage.getInstance());
+    myUserStoryManager = new UserStoryManager(new CustomColumnsManager()); //Added @Catarina
+    myTaskManagerConfig = new TaskManagerConfigImpl(myResourceManager, myUserStoryManager, myCalendar, GanttLanguage.getInstance());
     myTaskManager = TaskManager.Access.newInstance(null, myTaskManagerConfig);
     myUIConfiguration = new UIConfiguration(Color.BLUE, true);
     myTaskCustomColumnManager = new CustomColumnsManager();
@@ -136,6 +139,10 @@ public class GanttProjectImpl implements IGanttProject {
   public HumanResourceManager getHumanResourceManager() {
     return myResourceManager;
   }
+
+  //Added @Catarina
+  @Override
+  public UserStoryManager getUserStoryManager() { return myUserStoryManager; }
 
   @Override
   public RoleManager getRoleManager() {
@@ -225,12 +232,14 @@ public class GanttProjectImpl implements IGanttProject {
 
   private static class TaskManagerConfigImpl implements TaskManagerConfig {
     private final HumanResourceManager myResourceManager;
+    private final UserStoryManager myUserStoryManager; //Added @Catarina
     private final GPTimeUnitStack myTimeUnitStack;
     private final GPCalendarCalc myCalendar;
     private final ColorOption myDefaultTaskColorOption;
 
-    private TaskManagerConfigImpl(HumanResourceManager resourceManager, GPCalendarCalc calendar, GanttLanguage i18n) {
+    private TaskManagerConfigImpl(HumanResourceManager resourceManager, UserStoryManager userStoryManager, GPCalendarCalc calendar, GanttLanguage i18n) {
       myResourceManager = resourceManager;
+      myUserStoryManager = userStoryManager; //Added @Catarina
       myTimeUnitStack = new GPTimeUnitStack();
       myCalendar = calendar;
       myDefaultTaskColorOption = new DefaultTaskColorOption(DEFAULT_TASK_COLOR);
@@ -260,6 +269,10 @@ public class GanttProjectImpl implements IGanttProject {
     public HumanResourceManager getResourceManager() {
       return myResourceManager;
     }
+
+    //Added @Catarina
+    @Override
+    public UserStoryManager getUserStoryManager() { return myUserStoryManager; }
 
     @Override
     public URL getProjectDocumentURL() {

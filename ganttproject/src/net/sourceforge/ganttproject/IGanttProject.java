@@ -31,6 +31,7 @@ import net.sourceforge.ganttproject.resource.HumanResourceManager;
 import net.sourceforge.ganttproject.roles.RoleManager;
 import net.sourceforge.ganttproject.task.TaskContainmentHierarchyFacade;
 import net.sourceforge.ganttproject.task.TaskManager;
+import net.sourceforge.ganttproject.userStory.UserStoryManager;
 
 /**
  * This interface represents a project as a logical business entity, without any
@@ -59,6 +60,8 @@ public interface IGanttProject {
   UIConfiguration getUIConfiguration();
 
   HumanResourceManager getHumanResourceManager();
+
+  UserStoryManager getUserStoryManager();
 
   RoleManager getRoleManager();
 

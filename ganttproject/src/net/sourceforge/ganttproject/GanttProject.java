@@ -53,14 +53,7 @@ import net.sourceforge.ganttproject.document.Document;
 import net.sourceforge.ganttproject.document.Document.DocumentException;
 import net.sourceforge.ganttproject.document.DocumentCreator;
 import net.sourceforge.ganttproject.export.CommandLineExportApplication;
-import net.sourceforge.ganttproject.gui.NotificationManager;
-import net.sourceforge.ganttproject.gui.ProjectMRUMenu;
-import net.sourceforge.ganttproject.gui.ResourceTreeUIFacade;
-import net.sourceforge.ganttproject.gui.TaskTreeUIFacade;
-import net.sourceforge.ganttproject.gui.TestGanttRolloverButton;
-import net.sourceforge.ganttproject.gui.UIConfiguration;
-import net.sourceforge.ganttproject.gui.UIFacade;
-import net.sourceforge.ganttproject.gui.UIUtil;
+import net.sourceforge.ganttproject.gui.*;
 import net.sourceforge.ganttproject.gui.scrolling.ScrollingManager;
 import net.sourceforge.ganttproject.importer.Importer;
 import net.sourceforge.ganttproject.io.GPSaver;
@@ -81,6 +74,9 @@ import net.sourceforge.ganttproject.task.TaskContainmentHierarchyFacade;
 import net.sourceforge.ganttproject.task.TaskManager;
 import net.sourceforge.ganttproject.task.TaskManagerConfig;
 import net.sourceforge.ganttproject.task.TaskManagerImpl;
+import net.sourceforge.ganttproject.userStory.UserStoryEvent;
+import net.sourceforge.ganttproject.userStory.UserStoryManager;
+import net.sourceforge.ganttproject.userStory.UserStoryView;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -111,7 +107,7 @@ import java.util.regex.Pattern;
 /**
  * Main frame of the project
  */
-public class GanttProject extends GanttProjectBase implements ResourceView, GanttLanguage.Listener {
+public class GanttProject extends GanttProjectBase implements ResourceView, UserStoryView, GanttLanguage.Listener {
   private static final ExecutorService ourExecutor = Executors.newSingleThreadExecutor();
 
   /**
@@ -128,6 +124,9 @@ public class GanttProject extends GanttProjectBase implements ResourceView, Gant
    * GanttPeoplePanel to edit person that work on the project
    */
   private GanttResourcePanel resp;
+
+  //Added @Catarina
+  private GanttUserStoryPanel usp;
 
   private final EditMenu myEditMenu;
 
@@ -182,6 +181,9 @@ public class GanttProject extends GanttProjectBase implements ResourceView, Gant
   private ParserFactory myParserFactory;
 
   private HumanResourceManager myHumanResourceManager;
+
+  //Added @Catarina
+  private UserStoryManager myUserStoryManager;
 
   private RoleManager myRoleManager;
 
@@ -241,6 +243,10 @@ public class GanttProject extends GanttProjectBase implements ResourceView, Gant
       public HumanResourceManager getResourceManager() {
         return GanttProject.this.getHumanResourceManager();
       }
+
+      //Added @Catarina
+      @Override
+      public UserStoryManager getUserStoryManager() { return GanttProject.this.getUserStoryManager();}
 
       @Override
       public URL getProjectDocumentURL() {
@@ -902,6 +908,17 @@ public class GanttProject extends GanttProjectBase implements ResourceView, Gant
     return this.resp;
   }
 
+  //Added @Catarina
+  public GanttUserStoryPanel getUserStoryPanel() {
+    if (this.usp == null) {
+      this.usp = new GanttUserStoryPanel(this, getUIFacade());
+      this.usp.init();
+      myRowHeightAligners.add(this.usp.getRowHeightAligner());
+      getUserStoryManager().addView(this.usp);
+    }
+    return this.usp;
+  }
+
   public GanttGraphicArea getArea() {
     return this.area;
   }
@@ -1116,6 +1133,16 @@ public class GanttProject extends GanttProjectBase implements ResourceView, Gant
     return myHumanResourceManager;
   }
 
+  //Added @Catarina
+  @Override
+  public UserStoryManager getUserStoryManager() {
+    if (myUserStoryManager == null) {
+      myUserStoryManager = new UserStoryManager(getResourceCustomPropertyManager());
+      myUserStoryManager.addView(this);
+    }
+    return myUserStoryManager;
+  }
+
   @Override
   public TaskManager getTaskManager() {
     return myTaskManager;
@@ -1223,6 +1250,38 @@ public class GanttProject extends GanttProjectBase implements ResourceView, Gant
   }
 
   // ///////////////////////////////////////////////////////////////
+  // UserStoryView implementation
+  //Added @Catarina
+  public void userStoryAdded(UserStoryEvent event) {
+    if (getStatusBar() != null) {
+      // tabpane.setSelectedIndex(1);
+      String description = language.getCorrectedLabel("resource.new.description");
+      if (description == null) {
+        description = language.getCorrectedLabel("resource.new");
+      }
+      getUIFacade().setStatusText(description);
+      setAskForSave(true);
+      refreshProjectInformation();
+    }
+  }
+
+  @Override
+  public void userStoryRemoved(UserStoryEvent event) {
+    refreshProjectInformation();
+    setAskForSave(true);
+  }
+
+  @Override
+  public void userStoryChanged(UserStoryEvent e) {
+    setAskForSave(true);
+  }
+
+  @Override
+  public void userStoryAssignmentsChanged(UserStoryEvent e) {
+    setAskForSave(true);
+  }
+
+  // ///////////////////////////////////////////////////////////////
   // UIFacade
 
   @Override
@@ -1263,6 +1322,11 @@ public class GanttProject extends GanttProjectBase implements ResourceView, Gant
   @Override
   public ResourceTreeUIFacade getResourceTree() {
     return getResourcePanel();
+  }
+
+  @Override
+  public UserStoryTreeUIFacade getUserStoryTree() {
+    return getUserStoryPanel();
   }
 
   private class ParserFactoryImpl implements ParserFactory {

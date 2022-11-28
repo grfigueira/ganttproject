@@ -30,6 +30,7 @@ import net.sourceforge.ganttproject.task.Task;
 import net.sourceforge.ganttproject.task.TaskContainmentHierarchyFacade;
 import net.sourceforge.ganttproject.task.TaskManager;
 import net.sourceforge.ganttproject.task.dependency.TaskDependency;
+import net.sourceforge.ganttproject.userStory.UserStory;
 import net.sourceforge.ganttproject.util.collect.Pair;
 
 import java.util.Arrays;
@@ -55,6 +56,7 @@ public class ClipboardContents {
   };
 
   private final List<HumanResource> myResources = Lists.newArrayList();
+  private final List<UserStory> myUserStories = Lists.newArrayList(); //Added @Catarina
   private final List<Task> myTasks = Lists.newArrayList();
   private final List<TaskDependency> myIntraDeps = Lists.newArrayList();
   private final List<TaskDependency> myIncomingDeps = Lists.newArrayList();
@@ -198,6 +200,9 @@ public class ClipboardContents {
   public void addResource(HumanResource res) {
     myResources.add(res);
   }
+
+  //Added @Catarina
+  public void addUserStory(UserStory us) {myUserStories.add(us);}
 
   public List<HumanResource> getResources() {
     return myResources;

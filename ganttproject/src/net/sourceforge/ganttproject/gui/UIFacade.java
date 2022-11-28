@@ -145,6 +145,8 @@ public interface UIFacade {
 
   ResourceTreeUIFacade getResourceTree();
 
+  UserStoryTreeUIFacade getUserStoryTree(); //TODO - added
+
   TaskSelectionManager getTaskSelectionManager();
 
   TaskSelectionContext getTaskSelectionContext();

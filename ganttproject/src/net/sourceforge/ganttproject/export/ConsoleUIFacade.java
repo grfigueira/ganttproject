@@ -169,6 +169,18 @@ public class ConsoleUIFacade implements UIFacade {
     // TODO Auto-generated method stub
   }
 
+  //Added @Catarina
+  @Override
+  public int getUserStoryDividerLocation() {
+    // TODO Auto-generated method stub
+    return 0;
+  }
+  //Added @Catarina
+  @Override
+  public void setUserStoryDividerLocation(int location) {
+    // TODO Auto-generated method stub
+  }
+
   @Override
   public void refresh() {
     // TODO Auto-generated method stub

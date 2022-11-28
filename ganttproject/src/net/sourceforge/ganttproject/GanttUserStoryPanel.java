@@ -62,7 +62,7 @@ public class GanttUserStoryPanel extends TreeTableContainer<UserStory, UserStory
     private final UserStoryActionSet myUserStoryActionSet;
     private final GanttProjectBase.RowHeightAligner myRowHeightAligner;
 
-    public ResourceLoadGraphicArea area;
+    public UserStoryLoadGraphicArea area;
 
     private GPAction myTaskPropertiesAction;
 

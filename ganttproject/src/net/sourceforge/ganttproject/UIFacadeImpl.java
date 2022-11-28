@@ -438,6 +438,18 @@ class UIFacadeImpl extends ProgressProvider implements UIFacade {
     myFallbackDelegate.setResourceDividerLocation(location);
   }
 
+  //Added @Catarina
+  @Override
+  public int getUserStoryDividerLocation() {
+    return myFallbackDelegate.getUserStoryDividerLocation();
+  }
+
+  //Added @Catarina
+  @Override
+  public void setUserStoryDividerLocation(int location) {
+    myFallbackDelegate.setUserStoryDividerLocation(location);
+  }
+
   @Override
   public void refresh() {
     myFallbackDelegate.refresh();

@@ -130,6 +130,12 @@ public interface UIFacade {
 
   void setResourceDividerLocation(int location);
 
+  //Added @Catarina
+  int getUserStoryDividerLocation();
+
+  //Added @Catarina
+  void setUserStoryDividerLocation(int location);
+
   /** Refreshes the UI (ie repaints all tasks in the chart) */
   void refresh();
 

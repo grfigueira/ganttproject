@@ -357,17 +357,17 @@ public class GanttProject extends GanttProjectBase implements ResourceView, User
     getViewManager().createView(myGanttChartTabContent, new ImageIcon(getClass().getResource("/icons/tasks_16.gif")));
     getViewManager().toggleVisible(myGanttChartTabContent);
 
-    /*myResourceChartTabContent = new ResourceChartTabContentPanel(getProject(), getUIFacade(), getResourcePanel(),
+    myResourceChartTabContent = new ResourceChartTabContentPanel(getProject(), getUIFacade(), getResourcePanel(),
         getResourcePanel().area);
     getViewManager().createView(myResourceChartTabContent, new ImageIcon(getClass().getResource("/icons/res_16.gif")));
     getViewManager().toggleVisible(myResourceChartTabContent);
-*/
 
-    /*myResourceChartTabContent2 = new ResourceChartTabContentPanel(getProject(), getUIFacade(), getResourcePanel(),
+/*
+    myResourceChartTabContent2 = new ResourceChartTabContentPanel(getProject(), getUIFacade(), getResourcePanel(),
             getResourcePanel().area);
     getViewManager().createView(myResourceChartTabContent2, new ImageIcon(getClass().getResource("/icons/res_16.gif")));
-    getViewManager().toggleVisible(myResourceChartTabContent2);*/
-
+    getViewManager().toggleVisible(myResourceChartTabContent2);
+*/
     //Added @Catarina
     myUserStoryChartTabContent = new UserStoryChartTabContentPanel(getProject(), getUIFacade(), getResourcePanel(),
             getResourcePanel().area);
@@ -680,7 +680,9 @@ public class GanttProject extends GanttProjectBase implements ResourceView, User
     // deleteAction);
     UIUtil.registerActions(myGanttChartTabContent.getComponent(), true, newAction, propertiesAction, deleteAction);
     UIUtil.registerActions(myResourceChartTabContent.getComponent(), true, newAction, propertiesAction, deleteAction);
-    UIUtil.registerActions(myResourceChartTabContent2.getComponent(), true, newAction, propertiesAction, deleteAction);
+    //UIUtil.registerActions(myResourceChartTabContent2.getComponent(), true, newAction, propertiesAction, deleteAction);
+    UIUtil.registerActions(myUserStoryChartTabContent.getComponent(), true, newAction, propertiesAction, deleteAction);
+
     getTabs().addChangeListener(new ChangeListener() {
       @Override
       public void stateChanged(ChangeEvent e) {
@@ -1338,6 +1340,16 @@ public class GanttProject extends GanttProjectBase implements ResourceView, User
   @Override
   public void setResourceDividerLocation(int location) {
     myResourceChartTabContent.setDividerLocation(location);
+  }
+
+  @Override
+  public int getUserStoryDividerLocation() {
+    return myUserStoryChartTabContent.getDividerLocation();
+  }
+
+  @Override
+  public void setUserStoryDividerLocation(int location) {
+    myUserStoryChartTabContent.setDividerLocation(location);
   }
 
   @Override

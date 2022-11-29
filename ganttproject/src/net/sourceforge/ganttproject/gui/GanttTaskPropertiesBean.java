@@ -134,6 +134,8 @@ public class GanttTaskPropertiesBean extends JPanel {
 
   private int originalCompletionPercentage;
 
+  private Color originalColor;
+
   private Task.Priority originalPriority;
 
   private Task.TaskType originalTaskType;
@@ -438,16 +440,23 @@ public class GanttTaskPropertiesBean extends JPanel {
       if (this.originalPriority != getPriority()) {
         mutator.setPriority(getPriority());
       }
-      mutator.setColor(getTaskType().getTypeColor());
+      if(!this.originalColor.equals(myTaskColorOption.getValue())) {
+        mutator.setColor(myTaskColorOption.getValue());
+      }
       if (this.originalShape == null && shapeComboBox.getSelectedIndex() != 0 || originalShape != null
           && !this.originalShape.equals(shapeComboBox.getSelectedPaint())) {
-        mutator.setShape(new ShapePaint((ShapePaint) shapeComboBox.getSelectedPaint(), Color.white,
-            getTaskType().getTypeColor()));
+        if(this.originalColor.equals(myTaskColorOption.getValue())){
+          mutator.setShape(new ShapePaint((ShapePaint) shapeComboBox.getSelectedPaint(), Color.white,
+                  getTaskType().getTypeColor()));
+        }
+        else{
+          mutator.setShape(new ShapePaint((ShapePaint) shapeComboBox.getSelectedPaint(), Color.white,
+                  myTaskColorOption.getValue()));
+        }
       }
 
       if(this.originalTaskType != getTaskType()) {
         mutator.setTaskType(getTaskType());
-        mutator.setColor(getTaskType().getTypeColor());
       }
 
       mutator.commit();
@@ -593,6 +602,7 @@ public class GanttTaskPropertiesBean extends JPanel {
     originalEarliestBeginDate = task.getThird();
     originalEarliestBeginEnabled = task.getThirdDateConstraint();
     originalIsProjectTask = task.isProjectTask();
+    originalColor = task.getColor();
   }
 
   private boolean canBeProjectTask(Task testedTask, TaskContainmentHierarchyFacade taskHierarchy) {

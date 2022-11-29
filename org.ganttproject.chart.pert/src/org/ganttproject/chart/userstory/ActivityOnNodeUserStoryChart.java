@@ -786,11 +786,7 @@ public class ActivityOnNodeUserStoryChart extends UserStoryChart {
      */
     @Override
     public void paint(Graphics g) {
-      if (node.isCritical()) {
-        this.backgroundColor = defaultCriticalColor;
-      } else {
-        this.backgroundColor = defaultBackgroundColor;
-      }
+      this.backgroundColor = node.getColor();
       paintMe(g);
     }
 
@@ -818,7 +814,7 @@ public class ActivityOnNodeUserStoryChart extends UserStoryChart {
         color = MILESTONE_COLOR;
         break;
       default:
-        color = NORMAL_COLOR;
+        color = Color.RED;//NORMAL_COLOR;
       }
       g.setColor(this.backgroundColor);
 
@@ -848,6 +844,9 @@ public class ActivityOnNodeUserStoryChart extends UserStoryChart {
       if (node.getDuration() != null)
         g.drawString(language.getText("duration") + ": " + node.getDuration().getLength(), x + getTextPaddingX(),
             (int) (y + getTextPaddingY() + 4.3 * fontMetrics.getHeight()));
+      if(node.getUserStory() != null)
+        g.drawString(language.getText("userstory") + ": " + node.getUserStory(), x + getTextPaddingX(),
+              (int) (y + getTextPaddingY() + 5.3 * fontMetrics.getHeight()));
       g.setFont(f);
     }
 

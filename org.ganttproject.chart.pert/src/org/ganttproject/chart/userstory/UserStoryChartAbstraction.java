@@ -18,6 +18,7 @@ along with GanttProject.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.ganttproject.chart.userstory;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -120,6 +121,14 @@ public class UserStoryChartAbstraction {
 
     void setType(int type) {
       this.type = type;
+    }
+
+    public Color getColor(){
+      return  myTask.getColor();
+    }
+
+    public String getUserStory(){
+      return myTask.getUserStory();
     }
 
     int getType() {

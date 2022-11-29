@@ -58,6 +58,7 @@ public interface Task extends MutableTask {
       return DEFAULT_PRIORITY;
     }
 
+
     public String getPersistentValue() {
       return myPersistentValue;
     }
@@ -143,6 +144,7 @@ public interface Task extends MutableTask {
 
   }
 
+  public String getUserStory();
   /** Default priority (for new tasks) */
   public static final Priority DEFAULT_PRIORITY = Priority.NORMAL;
 

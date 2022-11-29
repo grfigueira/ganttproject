@@ -57,6 +57,7 @@ public interface MutableTask {
 
   /** Sets the weblink for the task */
   void setWebLink(String webLink);
+  void setUserStory(String userStory);
 
   void setNotes(String notes);
 

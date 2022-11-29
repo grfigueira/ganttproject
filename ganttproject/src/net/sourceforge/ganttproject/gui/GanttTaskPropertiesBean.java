@@ -95,6 +95,8 @@ public class GanttTaskPropertiesBean extends JPanel {
 
   private JButton bWebLink;
 
+  private JTextField tfUserStory;
+
   private JSpinner percentCompleteSlider;
 
   private JComboBox priorityComboBox;
@@ -163,6 +165,7 @@ public class GanttTaskPropertiesBean extends JPanel {
 
   private JCheckBox myShowInTimeline;
   private AbstractAction myOnEarliestBeginToggle;
+  private String originalUserStory;
 
   public GanttTaskPropertiesBean(GanttTask[] selectedTasks, IGanttProject project, UIFacade uifacade) {
     myTaskScheduleDates = new TaskScheduleDatesPanel(uifacade);
@@ -269,6 +272,13 @@ public class GanttTaskPropertiesBean extends JPanel {
     });
     propertiesPanel.add(new JLabel(language.getText("webLink")));
     propertiesPanel.add(weblinkBox);
+    SpringUtilities.makeCompactGrid(propertiesPanel, propertiesPanel.getComponentCount() / 2, 2, 1, 1, 5, 5);
+
+    Box userStoryBox = Box.createHorizontalBox();
+    tfUserStory = new JTextField(20);
+    userStoryBox.add(tfUserStory);
+    propertiesPanel.add(new JLabel(language.getText("userStory")));
+    propertiesPanel.add(userStoryBox);
 
     SpringUtilities.makeCompactGrid(propertiesPanel, propertiesPanel.getComponentCount() / 2, 2, 1, 1, 5, 5);
 
@@ -430,6 +440,9 @@ public class GanttTaskPropertiesBean extends JPanel {
       if (originalWebLink == null || !originalWebLink.equals(getWebLink())) {
         mutator.setWebLink(getWebLink());
       }
+      if (originalUserStory == null || !originalUserStory.equals(getUserStory())) {
+        mutator.setUserStory(getUserStory());
+      }
       if (mileStoneCheckBox1 != null) {
         if (originalIsMilestone != isMilestone()) {
           mutator.setMilestone(isMilestone());
@@ -527,6 +540,7 @@ public class GanttTaskPropertiesBean extends JPanel {
     myTaskScheduleDates.setupFields(isMilestone(), isSupertask());
 
     tfWebLink.setText(originalWebLink);
+    tfUserStory.setText(originalUserStory);
 
     if (selectedTasks[0].shapeDefined()) {
       for (int j = 0; j < ShapeConstants.PATTERN_LIST.length; j++) {
@@ -578,6 +592,11 @@ public class GanttTaskPropertiesBean extends JPanel {
     return text == null ? "" : text.trim();
   }
 
+  private String getUserStory() {
+    String text = tfUserStory.getText();
+    return text == null ? "" : text.trim();
+  }
+
   private int getPercentComplete() {
     return ((Integer) percentCompleteSlider.getValue()).hashCode();
   }
@@ -626,6 +645,7 @@ public class GanttTaskPropertiesBean extends JPanel {
     originalEarliestBeginEnabled = task.getThirdDateConstraint();
     originalIsProjectTask = task.isProjectTask();
     originalColor = task.getColor();
+    originalUserStory = task.getUserStory();
   }
 
   private boolean canBeProjectTask(Task testedTask, TaskContainmentHierarchyFacade taskHierarchy) {

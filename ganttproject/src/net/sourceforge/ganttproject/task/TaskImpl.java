@@ -155,7 +155,7 @@ public class TaskImpl implements Task {
     myTaskHierarchyItem = myManager.getHierarchyManager().createItem(this);
     myNotes = "";
     bExpand = true;
-    myColor = null;
+    myColor = Task.DEFAULT_TASK_TYPE.getTypeColor();
 
     customValues = new CustomColumnsValues(myManager.getCustomPropertyManager());
   }

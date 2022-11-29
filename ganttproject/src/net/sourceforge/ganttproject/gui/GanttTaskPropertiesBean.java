@@ -438,11 +438,11 @@ public class GanttTaskPropertiesBean extends JPanel {
       if (this.originalPriority != getPriority()) {
         mutator.setPriority(getPriority());
       }
-      mutator.setColor(originalTaskType.getTypeColor());
+      mutator.setColor(getTaskType().getTypeColor());
       if (this.originalShape == null && shapeComboBox.getSelectedIndex() != 0 || originalShape != null
           && !this.originalShape.equals(shapeComboBox.getSelectedPaint())) {
         mutator.setShape(new ShapePaint((ShapePaint) shapeComboBox.getSelectedPaint(), Color.white,
-            originalTaskType.getTypeColor()));
+            getTaskType().getTypeColor()));
       }
 
       if(this.originalTaskType != getTaskType()) {

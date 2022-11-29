@@ -100,14 +100,17 @@ public interface Task extends MutableTask {
     }
 
     public Color getTypeColor(){
-      Color typeColor = new Color(89, 89, 89);
+      Color typeColor = null;
       switch(this.toString()){
         case "PROGRAMMING":
           typeColor = new Color(252, 3, 28);
+          break;
         case "PLANNING":
           typeColor = new Color(255, 245, 46);
+          break;
         case "OTHER":
-          typeColor = new Color(89, 89, 89); // It's always picking OTHER (bug)
+          typeColor = new Color(89, 89, 89);
+          break;
       }
       return typeColor;
     }

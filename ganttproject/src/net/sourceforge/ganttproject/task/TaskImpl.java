@@ -98,7 +98,7 @@ public class TaskImpl implements Task {
 
   private TimeDuration myLength;
 
-  private String myUserStory;
+  private String myUserStory = "";
   private final List<TaskActivity> myActivities = new ArrayList<TaskActivity>();
 
   private boolean bExpand;
@@ -157,7 +157,6 @@ public class TaskImpl implements Task {
     myNotes = "";
     bExpand = true;
     myColor = Task.DEFAULT_TASK_TYPE.getTypeColor();
-    myUserStory = "none for now ffffffffffffffffffff";
 
     customValues = new CustomColumnsValues(myManager.getCustomPropertyManager());
   }
@@ -192,7 +191,7 @@ public class TaskImpl implements Task {
     myNotes = copy.myNotes;
     bExpand = copy.bExpand;
     myCost.setValue(copy.myCost);
-    myUserStory = "none for now fffffffffffffffffffffffffffffff";
+    myUserStory = copy.myUserStory;
 
     myDependencySlice = new TaskDependencySliceImpl(this, myManager.getDependencyCollection(), TaskDependencySlice.COMPLETE_SLICE_FXN);
     myDependencySliceAsDependant = new TaskDependencySliceAsDependant(this, myManager.getDependencyCollection());
@@ -880,6 +879,17 @@ public class TaskImpl implements Task {
     }
 
     @Override
+    public void setUserStory(final String userStory) {
+      myCommands.add(new Runnable() {
+        @Override
+        public void run() {
+          TaskImpl.this.setUserStory(userStory);
+        }
+      });
+    }
+
+
+    @Override
     public void setNotes(final String notes) {
       myCommands.add(new Runnable() {
         @Override
@@ -973,6 +983,11 @@ public class TaskImpl implements Task {
   @Override
   public void setWebLink(String webLink) {
     myWebLink = webLink;
+  }
+
+  @Override
+  public void setUserStory(String userStory) {
+    myUserStory = userStory;
   }
 
   @Override

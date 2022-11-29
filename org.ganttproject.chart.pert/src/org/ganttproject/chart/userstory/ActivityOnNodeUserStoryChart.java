@@ -844,8 +844,8 @@ public class ActivityOnNodeUserStoryChart extends UserStoryChart {
       if (node.getDuration() != null)
         g.drawString(language.getText("duration") + ": " + node.getDuration().getLength(), x + getTextPaddingX(),
             (int) (y + getTextPaddingY() + 4.3 * fontMetrics.getHeight()));
-      if(node.getUserStory() != null)
-        g.drawString(language.getText("userstory") + ": " + node.getUserStory(), x + getTextPaddingX(),
+      if(node.getUserStory() != null && !node.getUserStory().equals("") )
+        g.drawString(language.getText("userStory") + ": " + node.getUserStory(), x + getTextPaddingX(),
               (int) (y + getTextPaddingY() + 5.3 * fontMetrics.getHeight()));
       g.setFont(f);
     }

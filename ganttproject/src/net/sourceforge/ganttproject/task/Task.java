@@ -90,8 +90,7 @@ public interface Task extends MutableTask {
   }
 
   public enum TaskType {
-    // #fc031c           #fff52e       #Grey
-    PROGRAMMING("0"), PLANNING("1"), OTHER("2");
+    PLANNING("0"), RESEARCH("1"), DESIGN("2"), IMPLEMENTATION("3"), FOLLOW_UP("4"), OTHER("5");
 
     private final String myPersistentValue;
 
@@ -102,14 +101,23 @@ public interface Task extends MutableTask {
     public Color getTypeColor(){
       Color typeColor = null;
       switch(this.toString()){
-        case "PROGRAMMING":
-          typeColor = new Color(252, 3, 28);
-          break;
         case "PLANNING":
-          typeColor = new Color(255, 245, 46);
+          typeColor = Color.ORANGE;
+          break;
+        case "RESEARCH":
+          typeColor = Color.CYAN;
+          break;
+        case "DESIGN":
+          typeColor = Color.GREEN;
+          break;
+        case "IMPLEMENTATION":
+          typeColor = Color.RED;
+          break;
+        case "FOLLOW_UP":
+          typeColor = Color.PINK;
           break;
         case "OTHER":
-          typeColor = new Color(89, 89, 89);
+          typeColor = Color.GRAY;
           break;
       }
       return typeColor;
@@ -125,7 +133,7 @@ public interface Task extends MutableTask {
     }
 
     public String getTypeString(){
-      String typeString = this.toString();
+      String typeString = this.toString().replace("_", " ");
       return typeString.substring(0, 1).toUpperCase() + typeString.substring(1).toLowerCase();
     }
 

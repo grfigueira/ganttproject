@@ -742,6 +742,7 @@ public class TaskImpl implements Task {
           TaskImpl.this.setTaskType(type);
         }
       });
+      setColor(type.getTypeColor());
     }
 
     @Override
@@ -983,6 +984,7 @@ public class TaskImpl implements Task {
   @Override
   public void setTaskType(TaskType type) {
     myType = type;
+    myColor = type.getTypeColor();
   }
 
   @Override

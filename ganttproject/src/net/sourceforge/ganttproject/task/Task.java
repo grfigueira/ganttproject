@@ -21,6 +21,7 @@ package net.sourceforge.ganttproject.task;
 import biz.ganttproject.core.chart.render.ShapePaint;
 import biz.ganttproject.core.time.GanttCalendar;
 import biz.ganttproject.core.time.TimeDuration;
+//import com.sun.tools.javac.util.StringUtils;
 import net.sourceforge.ganttproject.document.Document;
 import net.sourceforge.ganttproject.task.dependency.TaskDependencySlice;
 
@@ -89,13 +90,26 @@ public interface Task extends MutableTask {
   }
 
   public enum TaskType {
-    // #fc031c                  #fff52e
+    // #fc031c           #fff52e       #Grey
     PROGRAMMING("0"), PLANNING("1"), OTHER("2");
 
     private final String myPersistentValue;
 
     private TaskType(String persistentValue){
       myPersistentValue = persistentValue;
+    }
+
+    public Color getTypeColor(){
+      Color typeColor = new Color(89, 89, 89);
+      switch(this.toString()){
+        case "PROGRAMMING":
+          typeColor = new Color(252, 3, 28);
+        case "PLANNING":
+          typeColor = new Color(255, 245, 46);
+        case "OTHER":
+          typeColor = new Color(89, 89, 89); // It's always picking OTHER (bug)
+      }
+      return typeColor;
     }
 
     public static TaskType getTaskType(int value) {
@@ -107,8 +121,9 @@ public interface Task extends MutableTask {
       return DEFAULT_TASK_TYPE;
     }
 
-    public String getTypeLowerString(){
-      return this.toString().toLowerCase();
+    public String getTypeString(){
+      String typeString = this.toString();
+      return typeString.substring(0, 1).toUpperCase() + typeString.substring(1).toLowerCase();
     }
 
   }

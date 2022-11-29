@@ -211,7 +211,7 @@ public class GanttTaskPropertiesBean extends JPanel {
     propertiesPanel.add(new JLabel("Task Type"));
     taskTypeComboBox = new JComboBox();
     for (Task.TaskType p : Task.TaskType.values()) {
-      taskTypeComboBox.addItem(p.getTypeLowerString());
+      taskTypeComboBox.addItem(p.getTypeString());
     }
     taskTypeComboBox.setEditable(false);
     propertiesPanel.add(taskTypeComboBox);
@@ -438,14 +438,16 @@ public class GanttTaskPropertiesBean extends JPanel {
       if (this.originalPriority != getPriority()) {
         mutator.setPriority(getPriority());
       }
-      if(this.originalTaskType != getTaskType()) {
-        mutator.setTaskType(getTaskType());
-      }
-      mutator.setColor(myTaskColorOption.getValue());
+      mutator.setColor(originalTaskType.getTypeColor());
       if (this.originalShape == null && shapeComboBox.getSelectedIndex() != 0 || originalShape != null
           && !this.originalShape.equals(shapeComboBox.getSelectedPaint())) {
         mutator.setShape(new ShapePaint((ShapePaint) shapeComboBox.getSelectedPaint(), Color.white,
-            myTaskColorOption.getValue()));
+            originalTaskType.getTypeColor()));
+      }
+
+      if(this.originalTaskType != getTaskType()) {
+        mutator.setTaskType(getTaskType());
+        mutator.setColor(getTaskType().getTypeColor());
       }
 
       mutator.commit();

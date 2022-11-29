@@ -98,6 +98,7 @@ public class TaskImpl implements Task {
 
   private TimeDuration myLength;
 
+  private String myUserStory;
   private final List<TaskActivity> myActivities = new ArrayList<TaskActivity>();
 
   private boolean bExpand;
@@ -156,6 +157,7 @@ public class TaskImpl implements Task {
     myNotes = "";
     bExpand = true;
     myColor = Task.DEFAULT_TASK_TYPE.getTypeColor();
+    myUserStory = "none for now ffffffffffffffffffff";
 
     customValues = new CustomColumnsValues(myManager.getCustomPropertyManager());
   }
@@ -190,6 +192,7 @@ public class TaskImpl implements Task {
     myNotes = copy.myNotes;
     bExpand = copy.bExpand;
     myCost.setValue(copy.myCost);
+    myUserStory = "none for now fffffffffffffffffffffffffffffff";
 
     myDependencySlice = new TaskDependencySliceImpl(this, myManager.getDependencyCollection(), TaskDependencySlice.COMPLETE_SLICE_FXN);
     myDependencySliceAsDependant = new TaskDependencySliceAsDependant(this, myManager.getDependencyCollection());
@@ -245,6 +248,10 @@ public class TaskImpl implements Task {
   @Override
   public int getTaskID() {
     return myID;
+  }
+
+  public String getUserStory() {
+    return this.myUserStory;
   }
 
   @Override

@@ -335,6 +335,14 @@ public class GanttTaskPropertiesBean extends JPanel {
     resourcesPanel = myAllocationsPanel.getComponent();
   }
 
+  private void constructTypeColorDescription(JPanel colorDescriptionPanel){
+    for(Task.TaskType taskType : Task.TaskType.values()){
+      JLabel typeColor = new JLabel(taskType.getTypeString());
+      typeColor.setForeground(taskType.getTypeColor());
+      colorDescriptionPanel.add(typeColor);
+    }
+  }
+
   /** Construct the notes panel */
   private void constructNotesPanel() {
     secondRowPanelNotes = new JPanel(new BorderLayout());
@@ -351,27 +359,8 @@ public class GanttTaskPropertiesBean extends JPanel {
     secondRowPanelNotes.add(scrollPaneNotes, BorderLayout.NORTH);
     notesPanel = secondRowPanelNotes;
 
-    JLabel typeColorPlanning = new JLabel("Planning - ORANGE");
-    typeColorPlanning.setForeground(Color.ORANGE);
-
-    JLabel typeColorResearch = new JLabel("Research - CYAN");
-    typeColorResearch.setForeground(Color.CYAN.darker());
-
-    JLabel typeColorDesign = new JLabel("Design - GREEN");
-    typeColorDesign.setForeground(Color.GREEN.darker());
-
-    JLabel typeColorImp = new JLabel("Implementation - RED");
-    typeColorImp.setForeground(Color.RED);
-
-    JLabel typeColorFollowUp = new JLabel("Follow up - PINK");
-    typeColorFollowUp.setForeground(Color.PINK);
-
-    colorDescriptionPanel.add(typeColorPlanning, BorderLayout.CENTER);
-    colorDescriptionPanel.add(typeColorResearch);
-    colorDescriptionPanel.add(typeColorDesign);
-    colorDescriptionPanel.add(typeColorImp);
-    colorDescriptionPanel.add(typeColorFollowUp);
     //colorDescriptionPanel.setBackground(Color.BLACK.brighter());
+    constructTypeColorDescription(colorDescriptionPanel);
     UIUtil.createTitle(colorDescriptionPanel, "Task Type - Color");
     secondRowPanelNotes.add(colorDescriptionPanel);
 

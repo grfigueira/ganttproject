@@ -105,10 +105,10 @@ public interface Task extends MutableTask {
           typeColor = Color.ORANGE;
           break;
         case "RESEARCH":
-          typeColor = Color.CYAN;
+          typeColor = Color.CYAN.darker();
           break;
         case "DESIGN":
-          typeColor = Color.GREEN;
+          typeColor = Color.GREEN.darker();
           break;
         case "IMPLEMENTATION":
           typeColor = Color.RED;

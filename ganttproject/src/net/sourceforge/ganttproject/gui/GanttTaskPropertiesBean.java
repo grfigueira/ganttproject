@@ -355,10 +355,10 @@ public class GanttTaskPropertiesBean extends JPanel {
     typeColorPlanning.setForeground(Color.ORANGE);
 
     JLabel typeColorResearch = new JLabel("Research - CYAN");
-    typeColorResearch.setForeground(Color.CYAN);
+    typeColorResearch.setForeground(Color.CYAN.darker());
 
     JLabel typeColorDesign = new JLabel("Design - GREEN");
-    typeColorDesign.setForeground(Color.GREEN);
+    typeColorDesign.setForeground(Color.GREEN.darker());
 
     JLabel typeColorImp = new JLabel("Implementation - RED");
     typeColorImp.setForeground(Color.RED);
@@ -371,7 +371,8 @@ public class GanttTaskPropertiesBean extends JPanel {
     colorDescriptionPanel.add(typeColorDesign);
     colorDescriptionPanel.add(typeColorImp);
     colorDescriptionPanel.add(typeColorFollowUp);
-
+    //colorDescriptionPanel.setBackground(Color.BLACK.brighter());
+    UIUtil.createTitle(colorDescriptionPanel, "Task Type - Color");
     secondRowPanelNotes.add(colorDescriptionPanel);
 
   }

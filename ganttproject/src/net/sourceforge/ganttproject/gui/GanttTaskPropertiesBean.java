@@ -87,6 +87,8 @@ public class GanttTaskPropertiesBean extends JPanel {
 
   private JPanel notesPanel;
 
+  private JPanel colorDescriptionPanel;
+
   private JTextField nameField1;
 
   private JTextField tfWebLink;
@@ -336,16 +338,42 @@ public class GanttTaskPropertiesBean extends JPanel {
   /** Construct the notes panel */
   private void constructNotesPanel() {
     secondRowPanelNotes = new JPanel(new BorderLayout());
+    colorDescriptionPanel = new JPanel();
+    BoxLayout boxLayout = new BoxLayout(colorDescriptionPanel, BoxLayout.Y_AXIS);
+    colorDescriptionPanel.setLayout(boxLayout);
     UIUtil.createTitle(secondRowPanelNotes, language.getText("notesTask"));
 
     noteAreaNotes = new JTextArea(8, 40);
     noteAreaNotes.setLineWrap(true);
     noteAreaNotes.setWrapStyleWord(true);
     noteAreaNotes.setBackground(new Color(1.0f, 1.0f, 1.0f));
-
     scrollPaneNotes = new JScrollPane(noteAreaNotes);
-    secondRowPanelNotes.add(scrollPaneNotes, BorderLayout.CENTER);
+    secondRowPanelNotes.add(scrollPaneNotes, BorderLayout.NORTH);
     notesPanel = secondRowPanelNotes;
+
+    JLabel typeColorPlanning = new JLabel("Planning - ORANGE");
+    typeColorPlanning.setForeground(Color.ORANGE);
+
+    JLabel typeColorResearch = new JLabel("Research - CYAN");
+    typeColorResearch.setForeground(Color.CYAN);
+
+    JLabel typeColorDesign = new JLabel("Design - GREEN");
+    typeColorDesign.setForeground(Color.GREEN);
+
+    JLabel typeColorImp = new JLabel("Implementation - RED");
+    typeColorImp.setForeground(Color.RED);
+
+    JLabel typeColorFollowUp = new JLabel("Follow up - PINK");
+    typeColorFollowUp.setForeground(Color.PINK);
+
+    colorDescriptionPanel.add(typeColorPlanning, BorderLayout.CENTER);
+    colorDescriptionPanel.add(typeColorResearch);
+    colorDescriptionPanel.add(typeColorDesign);
+    colorDescriptionPanel.add(typeColorImp);
+    colorDescriptionPanel.add(typeColorFollowUp);
+
+    secondRowPanelNotes.add(colorDescriptionPanel);
+
   }
 
   /** Initialize the widgets */

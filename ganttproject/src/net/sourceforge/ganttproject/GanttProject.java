@@ -49,18 +49,13 @@ import net.sourceforge.ganttproject.chart.GanttChart;
 import net.sourceforge.ganttproject.chart.TimelineChart;
 import net.sourceforge.ganttproject.chart.overview.GPToolbar;
 import net.sourceforge.ganttproject.chart.overview.ToolbarBuilder;
+import net.sourceforge.ganttproject.components.DialogDemo;
 import net.sourceforge.ganttproject.document.Document;
 import net.sourceforge.ganttproject.document.Document.DocumentException;
 import net.sourceforge.ganttproject.document.DocumentCreator;
 import net.sourceforge.ganttproject.export.CommandLineExportApplication;
-import net.sourceforge.ganttproject.gui.NotificationManager;
-import net.sourceforge.ganttproject.gui.ProjectMRUMenu;
-import net.sourceforge.ganttproject.gui.ResourceTreeUIFacade;
-import net.sourceforge.ganttproject.gui.TaskTreeUIFacade;
-import net.sourceforge.ganttproject.gui.TestGanttRolloverButton;
-import net.sourceforge.ganttproject.gui.UIConfiguration;
-import net.sourceforge.ganttproject.gui.UIFacade;
-import net.sourceforge.ganttproject.gui.UIUtil;
+import net.sourceforge.ganttproject.gui.*;
+import net.sourceforge.ganttproject.gui.options.OptionsPageBuilder;
 import net.sourceforge.ganttproject.gui.scrolling.ScrollingManager;
 import net.sourceforge.ganttproject.importer.Importer;
 import net.sourceforge.ganttproject.io.GPSaver;
@@ -81,18 +76,17 @@ import net.sourceforge.ganttproject.task.TaskContainmentHierarchyFacade;
 import net.sourceforge.ganttproject.task.TaskManager;
 import net.sourceforge.ganttproject.task.TaskManagerConfig;
 import net.sourceforge.ganttproject.task.TaskManagerImpl;
+import net.sourceforge.ganttproject.userStories.userStoriesDialogPanel;
+import net.sourceforge.ganttproject.userStory.UserStoryEvent;
+import net.sourceforge.ganttproject.userStory.UserStoryManager;
+import net.sourceforge.ganttproject.userStory.UserStoryView;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -111,7 +105,7 @@ import java.util.regex.Pattern;
 /**
  * Main frame of the project
  */
-public class GanttProject extends GanttProjectBase implements ResourceView, GanttLanguage.Listener {
+public class GanttProject extends GanttProjectBase implements ResourceView, UserStoryView, GanttLanguage.Listener {
   private static final ExecutorService ourExecutor = Executors.newSingleThreadExecutor();
 
   /**
@@ -184,6 +178,9 @@ public class GanttProject extends GanttProjectBase implements ResourceView, Gant
   private ParserFactory myParserFactory;
 
   private HumanResourceManager myHumanResourceManager;
+
+  //Added @Catarina
+  private UserStoryManager myUserStoryManager;
 
   private RoleManager myRoleManager;
 
@@ -341,6 +338,24 @@ public class GanttProject extends GanttProjectBase implements ResourceView, Gant
     }
     mHuman.add(myResourceActions.getResourceSendMailAction());
     bar.add(mHuman);
+
+    //User Stories Menu
+    JMenu mUserStory = UIUtil.createTooltiplessJMenu(GPAction.createVoidAction("User Stories"));
+    JMenuItem newUSbtn = new JMenuItem("New User Story");
+    newUSbtn.addActionListener(
+            new ActionListener() {
+              public void actionPerformed(ActionEvent e) {
+                JFrame frame = new JFrame("User Stories");
+                UserStoriesDialog dus = new UserStoriesDialog(frame, GanttProject.this, getUIFacade());
+                dus.setSize(700, 400);
+                dus.setVisible(true);
+              }
+            }
+    );
+    mUserStory.add(newUSbtn);
+    bar.add(mUserStory);
+
+
 
     HelpMenu helpMenu = new HelpMenu(getProject(), getUIFacade(), getProjectUIFacade());
     bar.add(helpMenu.createMenu());
@@ -958,6 +973,34 @@ public class GanttProject extends GanttProjectBase implements ResourceView, Gant
     return myZoomActions;
   }
 
+  @Override
+  public void userStoryAdded(UserStoryEvent event) {
+    if (getStatusBar() != null) {
+      // tabpane.setSelectedIndex(1);
+      String description = language.getCorrectedLabel("resource.new.description");
+      if (description == null) {
+        description = language.getCorrectedLabel("resource.new");
+      }
+      getUIFacade().setStatusText(description);
+      setAskForSave(true);
+    }
+  }
+
+  @Override
+  public void userStoryRemoved(UserStoryEvent event) {
+      setAskForSave(true);
+  }
+
+  @Override
+  public void userStoryChanged(UserStoryEvent event) {
+      setAskForSave(true);
+  }
+
+  @Override
+  public void userStoryAssignmentsChanged(UserStoryEvent e) {
+      setAskForSave(true);
+  }
+
   public static class Args {
     @Parameter(names = "-log", description = "Enable logging", arity = 1)
     public boolean log = true;
@@ -1143,6 +1186,17 @@ public class GanttProject extends GanttProjectBase implements ResourceView, Gant
     }
     return myHumanResourceManager;
   }
+
+
+  @Override
+  public UserStoryManager getUserStoryManager() {
+    if (myUserStoryManager == null) {
+      myUserStoryManager = new UserStoryManager(getResourceCustomPropertyManager());
+      myUserStoryManager.addView(this);
+    }
+    return myUserStoryManager;
+  }
+
 
   @Override
   public TaskManager getTaskManager() {

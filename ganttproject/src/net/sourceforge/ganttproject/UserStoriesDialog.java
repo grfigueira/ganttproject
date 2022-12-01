@@ -5,6 +5,7 @@ import net.sourceforge.ganttproject.action.CancelAction;
 import net.sourceforge.ganttproject.gui.UIFacade;
 import net.sourceforge.ganttproject.gui.options.OptionsPageBuilder;
 import net.sourceforge.ganttproject.language.GanttLanguage;
+import net.sourceforge.ganttproject.task.Task;
 import net.sourceforge.ganttproject.userStory.UserStory;
 import net.sourceforge.ganttproject.userStory.UserStoryManager;
 
@@ -28,6 +29,8 @@ public class UserStoriesDialog extends JPanel {
 
     private JTextArea myNewStory;
     private JTextField myNewName;
+
+    private JComboBox<UserStory> myPrivateJCBox;
 
     JFrame myFrame;
 
@@ -91,6 +94,10 @@ public class UserStoriesDialog extends JPanel {
                 constructAllStoriesPanel());*/
         tabbedPane.addTab("All User Stories", new ImageIcon(getClass().getResource("/icons/properties_16.gif")),
                 constructAllStoriesPanelScrollable());
+        tabbedPane.addTab("Edit User Story", new ImageIcon(getClass().getResource("/icons/properties_16.gif")),
+                constructEditAndDeletePanel());
+
+
 
 
 
@@ -218,10 +225,7 @@ public class UserStoriesDialog extends JPanel {
 
         saveBtn.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                applyChanges();
-                myGroup.commit();
-            }
+            public void actionPerformed(ActionEvent e) { applyChanges(); }
         });
 
         main.add(namePanel);
@@ -230,6 +234,90 @@ public class UserStoriesDialog extends JPanel {
 
         return main;
     }
+
+
+
+    private JPanel constructEditAndDeletePanel() {
+
+
+        final JTextField myChangedName = new JTextField(30);
+        final JTextArea myChangedStory = new JTextArea(5, 30);
+
+
+        JPanel main = new JPanel();
+        main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
+
+        JPanel dropDownPanel = new JPanel();
+        //dropDownPanel.setSize(new Dimension(200, 20));
+
+        final JComboBox userStoriesDropDown = new JComboBox();
+        myPrivateJCBox = new JComboBox();
+        //userStoriesDropDown.setSize(10, userStoriesDropDown.getPreferredSize().height);
+
+        for (UserStory us : myUserStoryManager.getUserStories()) {
+            userStoriesDropDown.addItem(us.getName());
+            myPrivateJCBox.addItem(us);
+        }
+        userStoriesDropDown.setEditable(false);
+
+        dropDownPanel.add(userStoriesDropDown);
+
+
+        final UserStory[] us = {null};
+
+        JButton getBtn = new JButton("See properties");
+        getBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int p = userStoriesDropDown.getSelectedIndex();
+                us[0] = myPrivateJCBox.getItemAt(p);
+                myChangedName.setText(us[0].getName());
+                myChangedStory.setText(us[0].getStory());
+            }
+        });
+        dropDownPanel.add(getBtn);
+
+        //User Story Panel to edit name and story
+        JPanel userStoryProperties = new JPanel();
+        userStoryProperties.setLayout(new BoxLayout(userStoryProperties, BoxLayout.Y_AXIS));
+
+        /////////////////////////////////
+        JPanel namePanel = new JPanel();
+        namePanel.add(new Label("Name"));
+        namePanel.add(myChangedName);
+
+        JPanel storyPanel = new JPanel();
+        storyPanel.add(new Label("Story "));
+        myChangedStory.setLineWrap(true);
+        myChangedStory.setWrapStyleWord(true);
+        myChangedStory.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.gray),
+                BorderFactory.createEmptyBorder(2, 2, 2, 2)));
+
+        storyPanel.add(myChangedStory);
+
+        userStoryProperties.add(namePanel); userStoryProperties.add(storyPanel);
+
+        JButton saveBtn = new JButton("Save");
+        saveBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (us[0] != null) {
+                    us[0].setName(myChangedName.getText());
+                    us[0].setStory(myChangedStory.getText());
+                }
+            }
+        });
+        userStoryProperties.add(saveBtn);
+        /////////////////////////////////
+
+
+
+        main.add(dropDownPanel);
+        main.add(userStoryProperties);
+        return main;
+    }
+
+
 
     private void okButtonActionPerformed() {
         //applyChanges();

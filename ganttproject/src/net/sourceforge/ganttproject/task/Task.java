@@ -89,12 +89,16 @@ public interface Task extends MutableTask {
     }
   }
 
-  public enum TaskType {
+  /**
+   * Available task types
+   * @author Guilherme Figueira 60288
+   */
+  enum TaskType {
     PLANNING("0"), RESEARCH("1"), DESIGN("2"), IMPLEMENTATION("3"), FOLLOW_UP("4"), OTHER("5");
 
     private final String myPersistentValue;
 
-    private TaskType(String persistentValue){
+    TaskType(String persistentValue){
       myPersistentValue = persistentValue;
     }
 
@@ -134,13 +138,15 @@ public interface Task extends MutableTask {
 
     public String getTypeString(){
       String typeString = this.toString().replace("_", " ");
-      return typeString.substring(0, 1).toUpperCase() + typeString.substring(1).toLowerCase();
+      return typeString.substring(0, 1).toUpperCase() + typeString.substring(1).toLowerCase(); //Capitalizes the string
     }
 
   }
 
   /** Default priority (for new tasks) */
   public static final Priority DEFAULT_PRIORITY = Priority.NORMAL;
+
+  /** Default type (for new tasks) */
   public static final TaskType DEFAULT_TASK_TYPE = TaskType.OTHER;
 
   public static interface Cost {

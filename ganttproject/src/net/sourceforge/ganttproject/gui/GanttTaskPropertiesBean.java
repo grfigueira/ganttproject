@@ -335,6 +335,10 @@ public class GanttTaskPropertiesBean extends JPanel {
     resourcesPanel = myAllocationsPanel.getComponent();
   }
 
+  /**
+   * Construct the description that tells the user which color is associated with each task type
+   * @author Guilherme Figueira 60288
+   */
   private void constructTypeColorDescription(JPanel colorDescriptionPanel){
     for(Task.TaskType taskType : Task.TaskType.values()){
       JLabel typeColor = new JLabel(taskType.getTypeString());
@@ -359,6 +363,7 @@ public class GanttTaskPropertiesBean extends JPanel {
     secondRowPanelNotes.add(scrollPaneNotes, BorderLayout.NORTH);
     notesPanel = secondRowPanelNotes;
 
+    //The background color can be changed to improve visibility (not necessary right now)
     //colorDescriptionPanel.setBackground(Color.BLACK.brighter());
     constructTypeColorDescription(colorDescriptionPanel);
     UIUtil.createTitle(colorDescriptionPanel, "Task Type - Color");

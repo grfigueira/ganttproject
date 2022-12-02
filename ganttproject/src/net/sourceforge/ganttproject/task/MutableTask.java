@@ -23,6 +23,7 @@ import java.awt.Color;
 import biz.ganttproject.core.chart.render.ShapePaint;
 import biz.ganttproject.core.time.GanttCalendar;
 import biz.ganttproject.core.time.TimeDuration;
+import net.sourceforge.ganttproject.userStory.UserStory;
 
 
 /**
@@ -57,7 +58,7 @@ public interface MutableTask {
 
   /** Sets the weblink for the task */
   void setWebLink(String webLink);
-  void setUserStory(String userStory);
+  void setUserStory(UserStory userStory);
 
   void setNotes(String notes);
 

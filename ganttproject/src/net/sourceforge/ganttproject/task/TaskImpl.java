@@ -44,6 +44,7 @@ import net.sourceforge.ganttproject.task.dependency.TaskDependencySliceAsDependa
 import net.sourceforge.ganttproject.task.dependency.TaskDependencySliceAsDependee;
 import net.sourceforge.ganttproject.task.dependency.TaskDependencySliceImpl;
 import net.sourceforge.ganttproject.task.hierarchy.TaskHierarchyItem;
+import net.sourceforge.ganttproject.userStory.UserStory;
 import net.sourceforge.ganttproject.util.collect.Pair;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -98,7 +99,7 @@ public class TaskImpl implements Task {
 
   private TimeDuration myLength;
 
-  private String myUserStory = "";
+  private UserStory myUserStory;
   private final List<TaskActivity> myActivities = new ArrayList<TaskActivity>();
 
   private boolean bExpand;
@@ -249,7 +250,7 @@ public class TaskImpl implements Task {
     return myID;
   }
 
-  public String getUserStory() {
+  public UserStory getUserStory() {
     return this.myUserStory;
   }
 
@@ -879,7 +880,7 @@ public class TaskImpl implements Task {
     }
 
     @Override
-    public void setUserStory(final String userStory) {
+    public void setUserStory(final UserStory userStory) {
       myCommands.add(new Runnable() {
         @Override
         public void run() {
@@ -986,7 +987,7 @@ public class TaskImpl implements Task {
   }
 
   @Override
-  public void setUserStory(String userStory) {
+  public void setUserStory(UserStory userStory) {
     myUserStory = userStory;
   }
 

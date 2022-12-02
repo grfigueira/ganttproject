@@ -84,7 +84,7 @@ public class ActivityOnNodeUserStoryChart extends UserStoryChart {
 
   private final static int X_GAP = 30;// 60;
 
-  private final static int Y_GAP = 15;// 30;
+  private final static int Y_GAP = 90;// 30; //15 //Changed not to overlap user stories so much
 
   private final static int ARROW_HEIGHT = 10;
 
@@ -251,6 +251,8 @@ public class ActivityOnNodeUserStoryChart extends UserStoryChart {
       maxX = Math.max(maxX, x);
       maxY = Math.max(maxY, y);
     }
+
+
     setPreferredSize(new Dimension(maxX, maxY));
     setMaxX(maxX);
     setMaxY(maxY);
@@ -658,7 +660,7 @@ public class ActivityOnNodeUserStoryChart extends UserStoryChart {
 
   @Override
   public String getName() {
-    return "UserStory chart";//language.getText("pertChartLongName");
+    return "UserStory Chart";//language.getText("pertChartLongName");
   }
 
   @Override
@@ -786,11 +788,7 @@ public class ActivityOnNodeUserStoryChart extends UserStoryChart {
      */
     @Override
     public void paint(Graphics g) {
-      if (node.isCritical()) {
-        this.backgroundColor = defaultCriticalColor;
-      } else {
-        this.backgroundColor = defaultBackgroundColor;
-      }
+      this.backgroundColor = node.getColor();
       paintMe(g);
     }
 
@@ -818,14 +816,23 @@ public class ActivityOnNodeUserStoryChart extends UserStoryChart {
         color = MILESTONE_COLOR;
         break;
       default:
-        color = NORMAL_COLOR;
+        color = Color.RED;//NORMAL_COLOR;
       }
       g.setColor(this.backgroundColor);
 
-      g.fillRoundRect(x, y, getNodeWidth(), getNodeHeight(), 16, 16);
+      //Calculate needed height for the node
+      int height = getNodeHeight();
+      if(node.getUserStory() != null && !node.getUserStory().equals("") ) {
+        String[] results = node.getUserStory().split("(?<=\\G.{" + 19 + "})");
+        float adc = fontMetrics.getHeight()*(results.length + 1);
+        height = (int) ((int) (NODE_HEIGHT + (int)adc) * getDpi());
+      }
+
+
+      g.fillRoundRect(x, y, getNodeWidth(), height, 16, 16); //changed here getNodeHeight()
       g.setColor(color);
-      g.drawRoundRect(x, y, getNodeWidth(), getNodeHeight(), 16, 16);
-      g.drawRoundRect(x + 1, y + 1, getNodeWidth() - 2, getNodeHeight() - 2, 14, 14);
+      g.drawRoundRect(x, y, getNodeWidth(), height, 16, 16); //changed here getNodeHeight()
+      g.drawRoundRect(x + 1, y + 1, getNodeWidth() - 2, height - 2, 14, 14); //changed here getNodeHeight()
 
       g.drawLine(x, y + getTextPaddingY() + fontMetrics.getHeight() + getYOffset(), x + getNodeWidth(), y + getTextPaddingY() + fontMetrics.getHeight()
           + getYOffset());
@@ -848,6 +855,23 @@ public class ActivityOnNodeUserStoryChart extends UserStoryChart {
       if (node.getDuration() != null)
         g.drawString(language.getText("duration") + ": " + node.getDuration().getLength(), x + getTextPaddingX(),
             (int) (y + getTextPaddingY() + 4.3 * fontMetrics.getHeight()));
+
+      /*if(node.getUserStory() != null && !node.getUserStory().equals("") )
+        g.drawString(language.getText("userStory") + ": " + node.getUserStory(), x + getTextPaddingX(),
+              (int) (y + getTextPaddingY() + 5.3 * fontMetrics.getHeight()));*/
+
+      // Splits the user story according to the characters count (19 chars per line)
+      if(node.getUserStory() != null && !node.getUserStory().equals("") ) {
+        String[] results = node.getUserStory().split("(?<=\\G.{" + 19 + "})");
+
+        g.drawString(language.getText("userStory") + ": ", x + getTextPaddingX(),
+                (int) (y + getTextPaddingY() + 5.3 * fontMetrics.getHeight()));
+        for (int i = 0; i < results.length; i++) {
+          double posy = i + 6.3;
+          g.drawString(results[i], x + getTextPaddingX(),
+                  (int) (y + getTextPaddingY() + posy * fontMetrics.getHeight()));
+        }
+      }
       g.setFont(f);
     }
 

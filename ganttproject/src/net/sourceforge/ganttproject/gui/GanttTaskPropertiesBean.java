@@ -44,6 +44,8 @@ import net.sourceforge.ganttproject.task.Task;
 import net.sourceforge.ganttproject.task.TaskContainmentHierarchyFacade;
 import net.sourceforge.ganttproject.task.TaskManager;
 import net.sourceforge.ganttproject.task.TaskMutator;
+import net.sourceforge.ganttproject.userStory.UserStory;
+import net.sourceforge.ganttproject.userStory.UserStoryManager;
 import net.sourceforge.ganttproject.util.BrowserControl;
 import net.sourceforge.ganttproject.util.collect.Pair;
 import org.jdesktop.swingx.JXDatePicker;
@@ -92,6 +94,12 @@ public class GanttTaskPropertiesBean extends JPanel {
   private JTextField tfWebLink;
 
   private JButton bWebLink;
+
+  private JTextField tfUserStory;
+
+  // Dropdown to choose the user story
+  private JComboBox dUserStory;
+  private JComboBox<UserStory> myPrivateJCBox = new JComboBox<>(); // Aux dropdown to get the actual story
 
   private JSpinner percentCompleteSlider;
 
@@ -152,6 +160,8 @@ public class GanttTaskPropertiesBean extends JPanel {
 
   private final HumanResourceManager myHumanResourceManager;
 
+  private final UserStoryManager myUserStoryManager;
+
   private final RoleManager myRoleManager;
 
   private Task myUnpluggedClone;
@@ -161,6 +171,8 @@ public class GanttTaskPropertiesBean extends JPanel {
 
   private JCheckBox myShowInTimeline;
   private AbstractAction myOnEarliestBeginToggle;
+  //private String originalUserStory;
+  private UserStory originalUserStory;
 
   public GanttTaskPropertiesBean(GanttTask[] selectedTasks, IGanttProject project, UIFacade uifacade) {
     myTaskScheduleDates = new TaskScheduleDatesPanel(uifacade);
@@ -169,6 +181,7 @@ public class GanttTaskPropertiesBean extends JPanel {
     myHumanResourceManager = project.getHumanResourceManager();
     myRoleManager = project.getRoleManager();
     myTaskManager = project.getTaskManager();
+    myUserStoryManager = project.getUserStoryManager();
     myProject = project;
     myUIfacade = uifacade;
     init();
@@ -267,6 +280,42 @@ public class GanttTaskPropertiesBean extends JPanel {
     });
     propertiesPanel.add(new JLabel(language.getText("webLink")));
     propertiesPanel.add(weblinkBox);
+    SpringUtilities.makeCompactGrid(propertiesPanel, propertiesPanel.getComponentCount() / 2, 2, 1, 1, 5, 5);
+
+    //Box userStoryBox = Box.createHorizontalBox();
+    /*tfUserStory = new JTextField(20);
+    userStoryBox.add(tfUserStory);
+    propertiesPanel.add(new JLabel(language.getText("userStory")));
+    propertiesPanel.add(userStoryBox);*/
+
+    propertiesPanel.add(new JLabel("User Story"));
+    dUserStory = new JComboBox();
+    dUserStory.addItem("none");
+    myPrivateJCBox.addItem(null);
+    for (UserStory us : myUserStoryManager.getUserStories()) {
+      dUserStory.addItem(us.getName());
+      myPrivateJCBox.addItem(us);
+    }
+    dUserStory.setEditable(false);
+    //userStoryBox.add(dUserStory);
+    propertiesPanel.add(dUserStory);
+
+
+
+
+    // To get the actual user story object
+    /*int p = dUserStory.getSelectedIndex();
+    if (p != 0)
+      originalUserStory = myPrivateJCBox.getItemAt(p);
+    else originalUserStory = null;
+*/
+    if (originalUserStory == null) {
+      myPrivateJCBox.setSelectedIndex(0);
+      dUserStory.setSelectedIndex(0);
+    } else {
+      myPrivateJCBox.setSelectedItem(originalUserStory);
+      dUserStory.setSelectedIndex(myPrivateJCBox.getSelectedIndex());
+    }
 
     SpringUtilities.makeCompactGrid(propertiesPanel, propertiesPanel.getComponentCount() / 2, 2, 1, 1, 5, 5);
 
@@ -407,6 +456,9 @@ public class GanttTaskPropertiesBean extends JPanel {
       if (originalWebLink == null || !originalWebLink.equals(getWebLink())) {
         mutator.setWebLink(getWebLink());
       }
+      //if (this.originalUserStory) {
+        mutator.setUserStory(getUserStory());
+      //}
       if (mileStoneCheckBox1 != null) {
         if (originalIsMilestone != isMilestone()) {
           mutator.setMilestone(isMilestone());
@@ -459,6 +511,10 @@ public class GanttTaskPropertiesBean extends JPanel {
         mutator.setTaskType(getTaskType());
       }
 
+      //if(this.originalUserStory != getUserStory()) {
+        mutator.setUserStory(getUserStory());
+      //}
+
       mutator.commit();
       myDependenciesPanel.commit();
       myAllocationsPanel.commit();
@@ -504,6 +560,17 @@ public class GanttTaskPropertiesBean extends JPanel {
     myTaskScheduleDates.setupFields(isMilestone(), isSupertask());
 
     tfWebLink.setText(originalWebLink);
+    //tfUserStory.setText(originalUserStory);
+    if (originalUserStory == null) {
+      myPrivateJCBox.setSelectedIndex(0);
+      dUserStory.setSelectedIndex(0);
+    } else {
+      myPrivateJCBox.setSelectedItem(originalUserStory);
+      dUserStory.setSelectedIndex(myPrivateJCBox.getSelectedIndex());
+    }
+
+
+
 
     if (selectedTasks[0].shapeDefined()) {
       for (int j = 0; j < ShapeConstants.PATTERN_LIST.length; j++) {
@@ -555,6 +622,13 @@ public class GanttTaskPropertiesBean extends JPanel {
     return text == null ? "" : text.trim();
   }
 
+  private UserStory getUserStory() {
+    //String text = tfUserStory.getText();
+    myPrivateJCBox.setSelectedIndex(dUserStory.getSelectedIndex());
+    return (UserStory) myPrivateJCBox.getSelectedItem();
+    //text == null ? "" : text.trim();
+  }
+
   private int getPercentComplete() {
     return ((Integer) percentCompleteSlider.getValue()).hashCode();
   }
@@ -603,6 +677,7 @@ public class GanttTaskPropertiesBean extends JPanel {
     originalEarliestBeginEnabled = task.getThirdDateConstraint();
     originalIsProjectTask = task.isProjectTask();
     originalColor = task.getColor();
+    originalUserStory = task.getUserStory();
   }
 
   private boolean canBeProjectTask(Task testedTask, TaskContainmentHierarchyFacade taskHierarchy) {

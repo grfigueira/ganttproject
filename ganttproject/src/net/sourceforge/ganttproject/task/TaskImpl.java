@@ -44,6 +44,7 @@ import net.sourceforge.ganttproject.task.dependency.TaskDependencySliceAsDependa
 import net.sourceforge.ganttproject.task.dependency.TaskDependencySliceAsDependee;
 import net.sourceforge.ganttproject.task.dependency.TaskDependencySliceImpl;
 import net.sourceforge.ganttproject.task.hierarchy.TaskHierarchyItem;
+import net.sourceforge.ganttproject.userStory.UserStory;
 import net.sourceforge.ganttproject.util.collect.Pair;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -98,6 +99,7 @@ public class TaskImpl implements Task {
 
   private TimeDuration myLength;
 
+  private UserStory myUserStory;
   private final List<TaskActivity> myActivities = new ArrayList<TaskActivity>();
 
   private boolean bExpand;
@@ -190,6 +192,7 @@ public class TaskImpl implements Task {
     myNotes = copy.myNotes;
     bExpand = copy.bExpand;
     myCost.setValue(copy.myCost);
+    myUserStory = copy.myUserStory;
 
     myDependencySlice = new TaskDependencySliceImpl(this, myManager.getDependencyCollection(), TaskDependencySlice.COMPLETE_SLICE_FXN);
     myDependencySliceAsDependant = new TaskDependencySliceAsDependant(this, myManager.getDependencyCollection());
@@ -245,6 +248,10 @@ public class TaskImpl implements Task {
   @Override
   public int getTaskID() {
     return myID;
+  }
+
+  public UserStory getUserStory() {
+    return this.myUserStory;
   }
 
   @Override
@@ -873,6 +880,17 @@ public class TaskImpl implements Task {
     }
 
     @Override
+    public void setUserStory(final UserStory userStory) {
+      myCommands.add(new Runnable() {
+        @Override
+        public void run() {
+          TaskImpl.this.setUserStory(userStory);
+        }
+      });
+    }
+
+
+    @Override
     public void setNotes(final String notes) {
       myCommands.add(new Runnable() {
         @Override
@@ -966,6 +984,11 @@ public class TaskImpl implements Task {
   @Override
   public void setWebLink(String webLink) {
     myWebLink = webLink;
+  }
+
+  @Override
+  public void setUserStory(UserStory userStory) {
+    myUserStory = userStory;
   }
 
   @Override

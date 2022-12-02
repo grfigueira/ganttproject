@@ -2,6 +2,7 @@ package net.sourceforge.ganttproject;
 
 import biz.ganttproject.core.option.*;
 import net.sourceforge.ganttproject.action.CancelAction;
+import net.sourceforge.ganttproject.action.OkAction;
 import net.sourceforge.ganttproject.gui.UIFacade;
 import net.sourceforge.ganttproject.gui.options.OptionsPageBuilder;
 import net.sourceforge.ganttproject.language.GanttLanguage;
@@ -13,9 +14,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 
-public class UserStoriesDialog extends JPanel {
+public class UserStoriesDialog extends JFrame {
 
     private static final GanttLanguage language = GanttLanguage.getInstance();
 
@@ -32,39 +35,45 @@ public class UserStoriesDialog extends JPanel {
 
     private JComboBox<UserStory> myPrivateJCBox;
 
-    JFrame myFrame;
+    private boolean refresh;
 
 
     private final UserStoryManager myUserStoryManager;
 
-    public UserStoriesDialog(JFrame frame, IGanttProject project, UIFacade uiFacade) {
-        //frame.setSize(700, 400);
+    public UserStoriesDialog(IGanttProject project, UIFacade uiFacade) {
         myUserStoryManager = project.getUserStoryManager();
         myUIFacade = uiFacade;
-        myFrame = frame;
 
         myGroup = new GPOptionGroup("description", new GPOption[] { myNameField, myStoryField });
         myGroup.setTitled(true);
+        refresh = false;
+    }
+
+    public boolean refresh() {
+        return refresh;
     }
 
     public void setVisible(boolean isVisible) {
         if (isVisible) {
-            loadFields();
+            refresh = false;
             Component contentPane = getComponent2();
-            CancelAction cancelAction = new CancelAction() {
+            OkAction okAction = new OkAction("Apply Changes") {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    myGroup.commit();
+                    //okButtonActionPerformed();
+                    refresh = true;
+                }
+            };
+            CancelAction cancelAction = new CancelAction("Close") {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     myGroup.rollback();
                     //change = false;
                 }
             };
-            myUIFacade.createDialog(contentPane, new Action[] { }, "User Stories").show();
+            myUIFacade.createDialog(contentPane, new Action[] { okAction, cancelAction }, "User Stories").show();
         }
-    }
-
-    private void loadFields() {
-        myNameField.setValue("                                                                                                                ");
-        myStoryField.setValue("");
     }
 
 
@@ -86,75 +95,17 @@ public class UserStoriesDialog extends JPanel {
 
         tabbedPane = new JTabbedPane();
 
-        /*tabbedPane.addTab("New User Story", new ImageIcon(getClass().getResource("/icons/properties_16.gif")),
-                mainPage);*/
         tabbedPane.addTab("New User Story", new ImageIcon(getClass().getResource("/icons/new_16.gif")),
                 constructAddStoryPanel());
-        /*tabbedPane.addTab("All User Stories", new ImageIcon(getClass().getResource("/icons/holidays_16.gif")),
-                constructAllStoriesPanel());*/
         tabbedPane.addTab("All User Stories", new ImageIcon(getClass().getResource("/icons/properties_16.gif")),
                 constructAllStoriesPanelScrollable());
-        tabbedPane.addTab("Edit User Story", new ImageIcon(getClass().getResource("/icons/properties_16.gif")),
+        tabbedPane.addTab("Edit User Story", new ImageIcon(getClass().getResource("/icons/note_16.gif")),
                 constructEditAndDeletePanel());
-
-
-
-
-
-
 
         return tabbedPane;
     }
 
-    // Working panel to show all stories (non-scrollable)
-    private JPanel constructAllStoriesPanel() {
-        JPanel main = new JPanel();
-        main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
-
-        //main.add(new JSeparator(SwingConstants.HORIZONTAL));
-
-        if (myUserStoryManager.getUserStoriesArray().length == 0) {
-            //main.add(new JSeparator(SwingConstants.HORIZONTAL));
-            JPanel empty = new JPanel();
-            empty.add(new JLabel("No User Stories yet"));
-            main.add(empty);
-        } else {
-            JPanel titlePanel = new JPanel();
-            titlePanel.add(new JLabel("User Stories List"));
-            main.add(titlePanel);
-        }
-
-
-        for (UserStory us : myUserStoryManager.getUserStories()) {
-            //main.add(new JSeparator(SwingConstants.HORIZONTAL));
-            JPanel usPanel = new JPanel();
-            usPanel.setLayout(new BoxLayout(usPanel, BoxLayout.Y_AXIS));
-            //usPanel.setAlignmentX(LEFT_ALIGNMENT);
-
-            // A panel for the user story
-            /*JPanel storyPanel = new JPanel();
-            storyPanel.add(new JLabel(us.getStory()));
-            usPanel.add(storyPanel);*/
-
-            // Wrappable story area
-            JTextArea storyArea = new JTextArea(1, 30);
-            storyArea.setText(us.getStory());
-            storyArea.setEditable(false);
-            storyArea.setLineWrap(true);
-            storyArea.setWrapStyleWord(true);
-
-            usPanel.add(storyArea);
-
-            usPanel.setBorder(BorderFactory.createTitledBorder(us.getName()));
-
-            main.add(usPanel);
-        }
-
-        return main;
-    }
-
     private JScrollPane constructAllStoriesPanelScrollable() {
-
         // Main panel where all components will be added
         JPanel main = new JPanel();
         main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
@@ -170,18 +121,15 @@ public class UserStoriesDialog extends JPanel {
         }
 
         for (UserStory us : myUserStoryManager.getUserStories()) {
-
             // Panel for each user story
             JPanel usPanel = new JPanel();
             usPanel.setLayout(new BoxLayout(usPanel, BoxLayout.Y_AXIS)); // Sets the orientation
-
             // Area where the story will be presented
             JTextArea storyArea = new JTextArea(1, 30);
             storyArea.setText(us.getStory());
             storyArea.setEditable(false);
             storyArea.setLineWrap(true);
             storyArea.setWrapStyleWord(true);
-
             usPanel.add(storyArea);
             // Border of each user story with its name
             usPanel.setBorder(BorderFactory.createTitledBorder(us.getName()));
@@ -206,13 +154,11 @@ public class UserStoriesDialog extends JPanel {
 
         JPanel namePanel = new JPanel();
         namePanel.add(new Label("Name"));
-        //JTextField myNewName = new JTextField(30);
         myNewName = new JTextField(30);
         namePanel.add(myNewName);
 
         JPanel storyPanel = new JPanel();
         storyPanel.add(new Label("Story "));
-        //JTextArea storyArea = new JTextArea(7, 30);
         myNewStory = new JTextArea(5, 30);
         myNewStory.setLineWrap(true);
         myNewStory.setWrapStyleWord(true);
@@ -221,11 +167,11 @@ public class UserStoriesDialog extends JPanel {
 
         storyPanel.add(myNewStory);
 
-        JButton saveBtn = new JButton("Save");
+        JButton saveBtn = new JButton("Save Story");
 
         saveBtn.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) { applyChanges(); }
+            public void actionPerformed(ActionEvent e) { applyChanges();}
         });
 
         main.add(namePanel);
@@ -235,69 +181,71 @@ public class UserStoriesDialog extends JPanel {
         return main;
     }
 
-
-
     private JPanel constructEditAndDeletePanel() {
+        // Creation of the main/container panel and definition of the components' orientation (vertical)
+        final JPanel main = new JPanel();
+        main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
 
+        // Creation of the interior panels
+        final JPanel dropdownPanel = new JPanel();
+        final JPanel userStoryProperties = new JPanel();
+        final JPanel namePanel = new JPanel();
+        final JPanel storyPanel = new JPanel();
+        final JPanel buttonsContainer = new JPanel();
 
+        // Creation of the text fields for input
         final JTextField myChangedName = new JTextField(30);
         final JTextArea myChangedStory = new JTextArea(5, 30);
 
-
-        JPanel main = new JPanel();
-        main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
-
-        JPanel dropDownPanel = new JPanel();
-        //dropDownPanel.setSize(new Dimension(200, 20));
-
-        final JComboBox userStoriesDropDown = new JComboBox();
-        myPrivateJCBox = new JComboBox();
-        //userStoriesDropDown.setSize(10, userStoriesDropDown.getPreferredSize().height);
-
-        for (UserStory us : myUserStoryManager.getUserStories()) {
-            userStoriesDropDown.addItem(us.getName());
-            myPrivateJCBox.addItem(us);
-        }
-        userStoriesDropDown.setEditable(false);
-
-        dropDownPanel.add(userStoriesDropDown);
-
-
-        final UserStory[] us = {null};
-
-        JButton getBtn = new JButton("See properties");
-        getBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int p = userStoriesDropDown.getSelectedIndex();
-                us[0] = myPrivateJCBox.getItemAt(p);
-                myChangedName.setText(us[0].getName());
-                myChangedStory.setText(us[0].getStory());
-            }
-        });
-        dropDownPanel.add(getBtn);
-
-        //User Story Panel to edit name and story
-        JPanel userStoryProperties = new JPanel();
+        // Components properties definition
         userStoryProperties.setLayout(new BoxLayout(userStoryProperties, BoxLayout.Y_AXIS));
-
-        /////////////////////////////////
-        JPanel namePanel = new JPanel();
-        namePanel.add(new Label("Name"));
-        namePanel.add(myChangedName);
-
-        JPanel storyPanel = new JPanel();
-        storyPanel.add(new Label("Story "));
         myChangedStory.setLineWrap(true);
         myChangedStory.setWrapStyleWord(true);
         myChangedStory.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.gray),
                 BorderFactory.createEmptyBorder(2, 2, 2, 2)));
 
+        // Creation of the dropdown for choosing the user story
+        final JComboBox[] userStoriesDropDown = {getUSDropdown()};
+
+        // Temporary variables to store information about the selected user story
+        final UserStory[] us = {null};
+        final int[] index = {-2};
+
+        // Buttons creation
+        JButton getBtn = new JButton("Select Story");
+        JButton saveBtn = new JButton("Save Changes");
+        JButton deleteBtn = new JButton("Delete Story");
+
+        // Adding components to the corresponding panels
+        dropdownPanel.add(userStoriesDropDown[0]);
+        dropdownPanel.add(getBtn);
+        namePanel.add(new Label("Name"));
+        namePanel.add(myChangedName);
+        storyPanel.add(new Label("Story "));
         storyPanel.add(myChangedStory);
+        userStoryProperties.add(namePanel);
+        userStoryProperties.add(storyPanel);
+        buttonsContainer.add(saveBtn);
+        buttonsContainer.add(deleteBtn);
+        main.add(dropdownPanel);
+        main.add(userStoryProperties);
+        main.add(buttonsContainer);
 
-        userStoryProperties.add(namePanel); userStoryProperties.add(storyPanel);
 
-        JButton saveBtn = new JButton("Save");
+        // Buttons action definition
+        // Select story button
+        getBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int p = userStoriesDropDown[0].getSelectedIndex();
+                us[0] = myPrivateJCBox.getItemAt(p);
+                index[0] = p;
+                myChangedName.setText(us[0].getName());
+                myChangedStory.setText(us[0].getStory());
+            }
+        });
+
+        // Save button
         saveBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -307,20 +255,38 @@ public class UserStoriesDialog extends JPanel {
                 }
             }
         });
-        userStoryProperties.add(saveBtn);
-        /////////////////////////////////
 
-
-
-        main.add(dropDownPanel);
-        main.add(userStoryProperties);
+        // Delete Button
+        deleteBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (us[0] != null && index[0] != -2) {
+                    myPrivateJCBox.remove(index[0]);
+                    userStoriesDropDown[0].remove(index[0]);
+                    myUserStoryManager.remove(us[0]);
+                    myChangedName.setText(null);
+                    myChangedStory.setText(null);
+                    userStoriesDropDown[0] = getUSDropdown();
+                }
+            }
+        });
         return main;
     }
 
 
 
-    private void okButtonActionPerformed() {
-        //applyChanges();
+    private JComboBox getUSDropdown() {
+        final JComboBox userStoriesDropDown = new JComboBox();
+        myPrivateJCBox = new JComboBox();
+
+        for (UserStory us : myUserStoryManager.getUserStories()) {
+            userStoriesDropDown.addItem(us.getName());
+            myPrivateJCBox.addItem(us);
+        }
+        userStoriesDropDown.setEditable(false);
+        userStoriesDropDown.setPrototypeDisplayValue("No user story selected...");
+        myPrivateJCBox.setPrototypeDisplayValue(null);
+        return userStoriesDropDown;
     }
 
 

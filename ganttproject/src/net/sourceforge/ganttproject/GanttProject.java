@@ -343,9 +343,10 @@ public class GanttProject extends GanttProjectBase implements ResourceView, User
             new ActionListener() {
               public void actionPerformed(ActionEvent e) {
                 JFrame frame = new JFrame("User Stories");
-                UserStoriesDialog dus = new UserStoriesDialog(frame, GanttProject.this, getUIFacade());
+                UserStoriesDialog dus = new UserStoriesDialog(GanttProject.this, getUIFacade());
                 dus.setSize(700, 400);
                 dus.setVisible(true);
+                while (dus.refresh()) dus.setVisible(true);
               }
             }
     );

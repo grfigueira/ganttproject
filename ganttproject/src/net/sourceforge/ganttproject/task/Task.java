@@ -24,6 +24,7 @@ import biz.ganttproject.core.time.TimeDuration;
 //import com.sun.tools.javac.util.StringUtils;
 import net.sourceforge.ganttproject.document.Document;
 import net.sourceforge.ganttproject.task.dependency.TaskDependencySlice;
+import net.sourceforge.ganttproject.userStory.UserStory;
 
 import java.awt.*;
 import java.math.BigDecimal;
@@ -35,6 +36,8 @@ import java.util.List;
  * @author bard
  */
 public interface Task extends MutableTask {
+  String getUserStoryStory();
+
   /** Available task priorities */
   public enum Priority {
     LOWEST("3"), LOW("0"), NORMAL("1"), HIGH("2"), HIGHEST("4");
@@ -57,7 +60,6 @@ public interface Task extends MutableTask {
       }
       return DEFAULT_PRIORITY;
     }
-
 
     public String getPersistentValue() {
       return myPersistentValue;
@@ -144,7 +146,7 @@ public interface Task extends MutableTask {
 
   }
 
-  public String getUserStory();
+  public UserStory getUserStory();
   /** Default priority (for new tasks) */
   public static final Priority DEFAULT_PRIORITY = Priority.NORMAL;
 

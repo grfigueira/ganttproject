@@ -250,6 +250,12 @@ public class TaskImpl implements Task {
     return myID;
   }
 
+  @Override
+  public String getUserStoryStory() {
+    if (myUserStory == null) return null;
+    return myUserStory.getStory();
+  }
+
   public UserStory getUserStory() {
     return this.myUserStory;
   }

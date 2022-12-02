@@ -128,7 +128,7 @@ public class UserStoryChartAbstraction {
     }
 
     public String getUserStory(){
-      return myTask.getUserStory();
+      return myTask.getUserStoryStory();
     }
 
     int getType() {

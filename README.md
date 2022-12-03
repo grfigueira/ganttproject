@@ -1,8 +1,8 @@
-GanttProject
-============
-GanttProject is an open-source desktop project scheduling and management tool. It is written in Java/Swing.
+# GanttProject
 
-
-
-## License
-GanttProject is distributed under GPLv3
+### Realizado por: 
+- Afonso Ribeiro, 59895, @AfonsoRibFac
+- Catarina Crespo, 59810, @Catarina-Crespo
+- Danny Fernandes, 61162, @Dannyisco
+- Guilherme Figueira, 60288, @grfigueira
+- Luana Gonçalves, 60294, @LuanaGoncalves18

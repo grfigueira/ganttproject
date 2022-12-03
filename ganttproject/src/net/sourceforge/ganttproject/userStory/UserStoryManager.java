@@ -104,6 +104,7 @@ public class UserStoryManager {
 
     public void remove(UserStory userStory) {
         fireResourcesRemoved(new UserStory[] { userStory });
+        userStory.removeAllTasks();
         userStories.remove(userStory);
     }
 

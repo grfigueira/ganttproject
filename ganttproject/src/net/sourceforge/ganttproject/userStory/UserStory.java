@@ -124,7 +124,7 @@ public class UserStory implements CustomPropertyHolder {
         userStoryTasks.remove(task);
     }
 
-    private void removeAllTasks() {
+    public void removeAllTasks() {
         for (Task t: userStoryTasks) {
             t.removeUserStory();
         }

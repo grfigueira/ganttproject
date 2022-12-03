@@ -81,7 +81,6 @@ public class GanttXMLSaver extends SaverBase implements GPSaver {
         // ViewSaver)
         addAttribute("gantt-divider-location", "" + myUIFacade.getGanttDividerLocation(), attrs);
         addAttribute("resource-divider-location", "" + myUIFacade.getResourceDividerLocation(), attrs);
-        addAttribute("resource-divider-location2", "" + myUIFacade.getResourceDividerLocation2(), attrs);
       }
       addAttribute("version", VERSION, attrs);
       addAttribute("locale", GanttLanguage.getInstance().getLocale().toString(), attrs);

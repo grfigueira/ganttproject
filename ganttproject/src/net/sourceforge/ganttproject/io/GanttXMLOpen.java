@@ -101,7 +101,6 @@ public class GanttXMLOpen implements GPParser {
     myUIFacade.setGanttDividerLocation(ganttDividerLocation);
     if (resourceDividerLocation != 0) {
       myUIFacade.setResourceDividerLocation(resourceDividerLocation);
-      myUIFacade.setResourceDividerLocation2(resourceDividerLocation2);
     }
     return true;
 

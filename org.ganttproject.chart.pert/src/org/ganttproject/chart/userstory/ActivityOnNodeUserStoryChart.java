@@ -864,7 +864,7 @@ public class ActivityOnNodeUserStoryChart extends UserStoryChart {
       if(node.getUserStory() != null && !node.getUserStory().equals("") ) {
         String[] results = node.getUserStory().split("(?<=\\G.{" + 19 + "})");
 
-        g.drawString(language.getText("userStory") + ": ", x + getTextPaddingX(),
+        g.drawString("User Story" + ": ", x + getTextPaddingX(),
                 (int) (y + getTextPaddingY() + 5.3 * fontMetrics.getHeight()));
         for (int i = 0; i < results.length; i++) {
           double posy = i + 6.3;

@@ -57,7 +57,7 @@ public class UserStoriesDialog extends JFrame {
         if (isVisible) {
             refresh = false;
             Component contentPane = getComponent2();
-            OkAction okAction = new OkAction("Apply Changes") {
+            OkAction okAction = new OkAction("Refresh") {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     myGroup.commit();
@@ -123,9 +123,11 @@ public class UserStoriesDialog extends JFrame {
         for (UserStory us : myUserStoryManager.getUserStories()) {
             // Panel for each user story
             JPanel usPanel = new JPanel();
+
             usPanel.setLayout(new BoxLayout(usPanel, BoxLayout.Y_AXIS)); // Sets the orientation
             // Area where the story will be presented
-            JTextArea storyArea = new JTextArea(1, 30);
+            JTextArea storyArea = new JTextArea(3, 20);
+            storyArea.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 20));
             storyArea.setText(us.getStory());
             storyArea.setEditable(false);
             storyArea.setLineWrap(true);

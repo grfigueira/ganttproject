@@ -133,6 +133,12 @@ public class TaskTagHandler extends AbstractTagHandler implements ParsingListene
       task.setPriority(Task.Priority.fromPersistentValue(priority));
     }
 
+    int taskType = Integer.parseInt(attrs.getValue("taskType"));
+    if (taskType <= 5) {
+      task.setTaskType(Task.TaskType.getTaskType(taskType));
+    }
+
+
     String color = attrs.getValue("color");
     if (color != null) {
       task.setColor(ColorValueParser.parseString(color));

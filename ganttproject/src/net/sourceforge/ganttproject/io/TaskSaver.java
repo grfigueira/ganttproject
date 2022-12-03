@@ -88,6 +88,11 @@ class TaskSaver extends SaverBase {
     if (task.getPriority() != Task.DEFAULT_PRIORITY) {
       addAttribute("priority", task.getPriority().getPersistentValue(), attrs);
     }
+
+    // To save task type
+    addAttribute("taskType", task.getTaskType().ordinal(), attrs);
+
+
     final String sWebLink = task.getWebLink();
     if (sWebLink != null && !sWebLink.equals("") && !sWebLink.equals("http://")) {
       addAttribute("webLink", URLEncoder.encode(sWebLink, Charsets.UTF_8.name()), attrs);
@@ -174,6 +179,7 @@ class TaskSaver extends SaverBase {
     writeTaskProperty(handler, "tpd7", "completion", "default", "int");
     writeTaskProperty(handler, "tpd8", "coordinator", "default", "text");
     writeTaskProperty(handler, "tpd9", "predecessorsr", "default", "text");
+    writeTaskProperty(handler, "tp10", "taskType", "default", "int"); //Added for task type
     for (CustomPropertyDefinition cc : customPropertyManager.getDefinitions()) {
       Object defVal = cc.getDefaultValue();
       final Class<?> cla = cc.getType();

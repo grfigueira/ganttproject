@@ -96,6 +96,7 @@ public class GanttXMLSaver extends SaverBase implements GPSaver {
       emptyComment(handler);
       saveCalendar(handler);
       saveTasks(handler);
+      saveUserStories(handler);
       saveResources(handler);
       saveAssignments(handler);
       saveVacations(handler);
@@ -140,6 +141,10 @@ public class GanttXMLSaver extends SaverBase implements GPSaver {
 
   private void saveTasks(TransformerHandler handler) throws SAXException, IOException {
     new TaskSaver().save(getProject(), handler);
+  }
+
+  private void saveUserStories(TransformerHandler handler) throws SAXException, IOException {
+    new UserStorySaver().save(getProject(), handler);
   }
 
   private void saveAssignments(TransformerHandler handler) throws SAXException {

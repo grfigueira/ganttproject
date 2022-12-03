@@ -335,8 +335,8 @@ public class GanttProject extends GanttProjectBase implements ResourceView, User
     bar.add(mHuman);
 
     //User Stories Menu
-    JMenu mUserStory = UIUtil.createTooltiplessJMenu(GPAction.createVoidAction("User Stories"));
-    JMenuItem newUSbtn = new JMenuItem("New User Story");
+    JMenu mUserStory = UIUtil.createTooltiplessJMenu(GPAction.createVoidAction("$User Stories"));
+    JMenuItem newUSbtn = new JMenuItem("User Stories Panel");
     newUSbtn.addActionListener(
             new ActionListener() {
               public void actionPerformed(ActionEvent e) {

@@ -12,12 +12,10 @@ import net.sourceforge.ganttproject.task.CustomColumnsValues;
 import net.sourceforge.ganttproject.task.Task;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
-/**
- * @author Catarina
- */
-//Added @Catarina
+
 public class UserStory implements CustomPropertyHolder {
     /**
      * Can be turned (temporarily) off to prevent (a flood of) events
@@ -30,7 +28,7 @@ public class UserStory implements CustomPropertyHolder {
 
     private String story;
 
-    private List<Task> userStoryTasks = new ArrayList<>();
+    private List<Task> userStoryTasks;
 
     // Here just to follow the template of the others, in practise, I have no idea what to do with it
     private final CustomColumnsValues myCustomProperties;
@@ -47,6 +45,7 @@ public class UserStory implements CustomPropertyHolder {
         this.name = name;
         this.myManager = manager;
         this.myCustomProperties = new CustomColumnsValues(myManager.getCustomPropertyManager());
+        this.userStoryTasks = new LinkedList<>();
     }
 
     private UserStory(UserStory copy) {
@@ -59,12 +58,19 @@ public class UserStory implements CustomPropertyHolder {
         myManager = copy.myManager;
         areEventsEnabled = true;
         myCustomProperties = (CustomColumnsValues) copy.myCustomProperties.clone();
+        userStoryTasks = copy.getUserStoryTasks();
     }
 
     //TODO - something equivalent with removeAllAssignments but about the tasks
+    private void removeAllTasks() {
+        for (Task t: userStoryTasks) {
+            t.removeUserStory();
+        }
+    }
 
     public void delete() {
         //TODO - here it would need the removeAllAssignments equivalent
+        removeAllTasks();
         myManager.remove(this);
     }
 
@@ -95,6 +101,10 @@ public class UserStory implements CustomPropertyHolder {
 
     public String getStory() {
         return story;
+    }
+
+    public List<Task> getUserStoryTasks() {
+        return this.userStoryTasks;
     }
 
     Object getCustomField(CustomPropertyDefinition def) {

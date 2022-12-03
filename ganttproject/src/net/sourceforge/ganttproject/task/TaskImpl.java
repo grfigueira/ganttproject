@@ -256,8 +256,14 @@ public class TaskImpl implements Task {
     return myUserStory.getStory();
   }
 
+  @Override
   public UserStory getUserStory() {
     return this.myUserStory;
+  }
+
+  @Override
+  public void removeUserStory() {
+    this.myUserStory = null;
   }
 
   @Override

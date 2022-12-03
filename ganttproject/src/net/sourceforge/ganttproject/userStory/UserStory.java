@@ -61,12 +61,7 @@ public class UserStory implements CustomPropertyHolder {
         userStoryTasks = copy.getUserStoryTasks();
     }
 
-    //TODO - something equivalent with removeAllAssignments but about the tasks
-    private void removeAllTasks() {
-        for (Task t: userStoryTasks) {
-            t.removeUserStory();
-        }
-    }
+
 
     public void delete() {
         //TODO - here it would need the removeAllAssignments equivalent
@@ -121,7 +116,20 @@ public class UserStory implements CustomPropertyHolder {
         }
     }
 
-    //TODO - create assignments and other assignment related operations
+    public void addTask(Task task) {
+        userStoryTasks.add(task);
+    }
+
+    public void removeTask(Task task) {
+        userStoryTasks.remove(task);
+    }
+
+    private void removeAllTasks() {
+        for (Task t: userStoryTasks) {
+            t.removeUserStory();
+        }
+        userStoryTasks.clear();
+    }
 
     public UserStory unpluggedClone() {
         return new UserStory(this);

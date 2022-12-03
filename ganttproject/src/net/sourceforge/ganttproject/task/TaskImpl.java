@@ -897,6 +897,7 @@ public class TaskImpl implements Task {
         @Override
         public void run() {
           TaskImpl.this.setUserStory(userStory);
+
         }
       });
     }
@@ -1000,7 +1001,12 @@ public class TaskImpl implements Task {
 
   @Override
   public void setUserStory(UserStory userStory) {
+    if (myUserStory != null)
+      myUserStory.removeTask(this);
     myUserStory = userStory;
+    if (myUserStory != null)
+      myUserStory.addTask(this);
+
   }
 
   @Override

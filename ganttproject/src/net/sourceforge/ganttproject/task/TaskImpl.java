@@ -1006,7 +1006,6 @@ public class TaskImpl implements Task {
     myUserStory = userStory;
     if (myUserStory != null)
       myUserStory.addTask(this);
-
   }
 
   @Override

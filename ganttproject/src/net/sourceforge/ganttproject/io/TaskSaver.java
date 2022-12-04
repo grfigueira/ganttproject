@@ -92,6 +92,12 @@ class TaskSaver extends SaverBase {
     // To save task type
     addAttribute("taskType", task.getTaskType().ordinal(), attrs);
 
+    // To save task associated User Story
+    if (task.getUserStory() != null) {
+      addAttribute("taskUserStory", task.getUserStory().getId(), attrs);
+    } else
+      addAttribute("taskUserStory", -2, attrs);
+
 
     final String sWebLink = task.getWebLink();
     if (sWebLink != null && !sWebLink.equals("") && !sWebLink.equals("http://")) {
@@ -180,6 +186,7 @@ class TaskSaver extends SaverBase {
     writeTaskProperty(handler, "tpd8", "coordinator", "default", "text");
     writeTaskProperty(handler, "tpd9", "predecessorsr", "default", "text");
     writeTaskProperty(handler, "tp10", "taskType", "default", "int"); //Added for task type
+    writeTaskProperty(handler, "tp11", "taskUserStory", "default", "int"); //Added for task user story
     for (CustomPropertyDefinition cc : customPropertyManager.getDefinitions()) {
       Object defVal = cc.getDefaultValue();
       final Class<?> cla = cc.getType();

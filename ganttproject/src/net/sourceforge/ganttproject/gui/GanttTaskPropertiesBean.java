@@ -179,11 +179,11 @@ public class GanttTaskPropertiesBean extends JPanel {
   public GanttTaskPropertiesBean(GanttTask[] selectedTasks, IGanttProject project, UIFacade uifacade) {
     myTaskScheduleDates = new TaskScheduleDatesPanel(uifacade);
     this.selectedTasks = selectedTasks;
+    myUserStoryManager = project.getUserStoryManager();
     storeOriginalValues(selectedTasks[0]);
     myHumanResourceManager = project.getHumanResourceManager();
     myRoleManager = project.getRoleManager();
     myTaskManager = project.getTaskManager();
-    myUserStoryManager = project.getUserStoryManager();
     myProject = project;
     myUIfacade = uifacade;
     init();
@@ -701,6 +701,9 @@ public class GanttTaskPropertiesBean extends JPanel {
     originalEarliestBeginEnabled = task.getThirdDateConstraint();
     originalIsProjectTask = task.isProjectTask();
     originalColor = task.getColor();
+    if (task.getUserStory() != null && task.getUserStory().getName().equals("%nrst00")) {
+      task.setUserStory(myUserStoryManager.getById(task.getUserStory().getId()));
+    }
     originalUserStory = task.getUserStory();
   }
 

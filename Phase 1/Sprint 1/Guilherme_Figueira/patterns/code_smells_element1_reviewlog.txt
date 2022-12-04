@@ -1,0 +1,10 @@
+[1]
+Reviewed por Afonso Ribeiro
+Review comment: concordo com o diagnóstico e com a resolução do problema
+
+[2]
+Reviewed por Luana Gonçalves
+
+[3]
+Reviewed by Danny Fernandes
+Review Comment: Concordo e a solução proposta parece-me adequada à situação.

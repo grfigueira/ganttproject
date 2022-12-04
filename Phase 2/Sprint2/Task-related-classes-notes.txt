@@ -1,0 +1,46 @@
+
+
+---------------------------------------------------------------------------------------
+Important classes to implement the new Functionalities (Task Oriented)
+---------------------------------------------------------------------------------------
+
+
+* Buttons and things names (in different languages):
+ganttproject/data/resources/language/i18n.properties
+
+
+* Main class related to the graphical interface of the program:
+ganttproject/src/net/sourceforge/ganttproject/GanttProject.java
+	- can we create a new button for user stories here?? - lines 618-630
+
+
+* Each action has a class associated to it, they are all in the package:
+ganttproject/src/net/sourceforge/ganttproject/action
+	* The actions related to tasks are in the subpackage
+	ganttproject/src/net/sourceforge/ganttproject/action/task
+
+
+* Classes are created/implemented with the following classes and interfaces
+ganttproject/src/net/sourceforge/ganttproject/task/Task.java
+ganttproject/src/net/sourceforge/ganttproject/task/TaskImpl.java
+	- Tasks are sometimes casted to GanttTask instances 
+	(from class ganttproject/src/net/sourceforge/ganttproject/GanttTask.java)
+
+
+* Classes/Interfaces to manage tasks:
+ganttproject/src/net/sourceforge/ganttproject/task/TaskManager.java
+ganttproject/src/net/sourceforge/ganttproject/task/TaskManagerImpl.java
+
+
+* Buttons actions extend the interface GPAction:
+ganttproject/src/net/sourceforge/ganttproject/action/GPAction.java
+
+
+* Everything calls the methods in:
+ganttproject/src/net/sourceforge/ganttproject/gui/UIFacade.java
+
+
+---------------------------------------------------------------------------------------
+
+Maybe important, maybe not...
+ganttproject/src/net/sourceforge/ganttproject/ResourceLoadGraphicArea.java

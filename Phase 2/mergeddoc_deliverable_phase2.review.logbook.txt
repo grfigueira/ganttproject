@@ -1,0 +1,177 @@
+[Fase 1 - Comentários das reviews]
+
+
+
+Code Smells (Afonso)
+-----------------------------------------------------
+[1] switch statements & repeated code
+Reviewed por Luana Gonçalves:
+Review comment: Concordo com a explicação e com a resolução proposta ao problema.
+
+[2] Dead Code
+Reviewed by Danny Fernandes
+Review Comment: Concordo com a explicação e a solução proposta seria acertada.
+
+[3] Code duplication
+Reviewed por Guilherme Figueira
+Review comment: concordo com a identificação do problema e acredito que a solução proposta é adequada.
+-----------------------------------------------------
+
+
+Design Patterns (Afonso)
+-----------------------------------------------------
+[1] Builders
+Reviewed por Luana Gonçalves:
+Review comment: Concordo com a identificação do pattern.
+
+[2] Singleton 
+Reviewed by Catarina Crespo
+Review comment: Falta explicação do pattern, embora concorde que está presente
+
+[3] Decorator 
+Reviewed por Guilherme Figueira
+Review comment: Tambem vejo a presença do pattern no código
+-----------------------------------------------------
+
+
+Code Smells (Guilherme)
+-----------------------------------------------------
+[1]
+Reviewed por Afonso Ribeiro
+Review comment: concordo com o diagnóstico e com a resolução do problema
+
+[2]
+Reviewed por Luana Gonçalves
+
+[3]
+Reviewed by Danny Fernandes
+Review Comment: Concordo e a solução proposta parece-me adequada à situação.
+-----------------------------------------------------
+
+
+Design Patterns (Guilherme)
+-----------------------------------------------------
+[1]
+Reviewed by Danny Fernandes
+
+[2]
+Reviewed by Catarina Crespo
+
+[3]
+Reviewed by Luana Gonçalves
+-----------------------------------------------------
+
+
+Code Smells (Catarina)
+-----------------------------------------------------
+[1] Duplicated code
+Reviewed por Afonso Ribeiro 
+Review comment: Concordo com Ambas a explicação e a Proposta de Refactoring
+
+[2] Dead code
+Reviewed por Luana Gonçalves:
+Review comment: Concordo com a identificação do problema e a sua proposta de resolução.
+
+[3] Message Chains
+Reviewed por Guilherme Figueira
+Review comment: concordo com a identificação do problema e concordo que o programa iria beneficiar da solução proposta não só por resolver o problema mas também por tornar o código mais legível..
+-----------------------------------------------------
+
+
+Design Patterns (Catarina)
+-----------------------------------------------------
+[1] Adapter Pattern
+Review by Afonso Ribeiro
+Review comment: O pattern está presente
+
+[2] Abstract Factory Pattern
+Reviewed by Afonso Ribeiro
+Review comment: Concordo com a explicação apresentada
+
+[3] Memento Pattern
+Reviewed por Guilherme Figueira
+Review comment: Concordo com a explicação e vejo a presença do pattern no código
+-----------------------------------------------------
+
+
+Code Smells (Luana)
+-----------------------------------------------------
+[1] Long Method / duplicated code
+Reviewed by Afonso Ribeiro
+Review comment: Concordo com a explicação e a solução. Adiciono ainda que devemos meter alguns dos valores em variáveis para evitar casos de shotgun surgery.
+
+[2] Dead code
+Reviewed by Danny Fernandes
+Review Comment: Concordo e a solução é acertada.
+
+[3] No coments 
+Reviewed by Guilherme Figueira
+Review comment: Concordo com a identificação do problema e com a solução proposta, no entanto acho que também não seria problemático comentar o código algum tempo depois de o escrever, desde que num futuro próximo (eg. depois de testar extensivamente o código).
+-----------------------------------------------------
+[1] Factory Method 
+Reviewed by Danny Fernandes
+Review comment: Concordo com a explicação e identificação do pattern.
+
+[2] Iterator 
+Reviewed by Catarina Crespo
+Review comment: 
+* A explicação do pattern podia especificar mais concretamente as linhas em que tal é observável, mas efeitivamente está presente no snippet do código.
+* Já não tem problemas
+
+[3] Adapter
+Reviewed by Danny Fernandes
+Review comment: Concordo com a identificação do pattern.
+-----------------------------------------------------
+
+
+Code Smells (Danny)
+-----------------------------------------------------
+[1] Dead code 
+Reviewed by Catarina Crespo
+
+[2] Long Parameter List
+Reviewed by Catarina Crespo
+
+[3] Long Method
+Reviewed by Catarina Crespo
+-----------------------------------------------------
+
+
+Design Patterns (Danny)
+-----------------------------------------------------
+[1] Iterator 
+Review by Afonso Ribeiro
+Review comment: Não faria mais sentido ser a implementação de um Iterador? Do gênero, uma classe implementa a interface Iterator?
+
+[2] Adapter
+Reviewed por Luana Gonçalves:
+Review comment: O pattern está presente.
+
+[3] Iterator
+Reviewed por Guilherme Figueira
+Review comment: Concordo com a explicação e vejo a presença do pattern no código.
+-----------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+[Fase 2 - Comentários das reviews]
+
+-----------------------------------------------------
+-----------------------------------------------------
+Line of Code Metrics Review
+
+
+* Acho que seria uma boa ideia arranjar exemplos concretos do que estás a dizer, porque neste momento apenas dizes que “pode ser um code smell” em vez de especificares se há efetivamente code smells nesta classe.
+* E a primeira frase “Pelas tabelas, nós podemos ver muitos problemas com o programa. As classes com mais comentários, são também as classes que mais comentários em javadoc tem.” não me parece 100% correta porque mais comentários em javadoc não é necessariamente uma coisa má e parece-me que a frase insinua isso (claro que isto já é mais subjetivo).
+
+Catarina Crespo
+4/12/2022 [11h00]
+-----------------------------------------------------

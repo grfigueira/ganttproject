@@ -78,7 +78,7 @@ public class ActivityOnNodeUserStoryChart extends UserStoryChart {
 
   private final static GanttLanguage language = GanttLanguage.getInstance();
 
-  private final static int NODE_WIDTH = 110;// 205;
+  private final static int NODE_WIDTH = 160;// 205; //110
 
   private final static int NODE_HEIGHT = 70;
 
@@ -823,7 +823,7 @@ public class ActivityOnNodeUserStoryChart extends UserStoryChart {
       //Calculate needed height for the node
       int height = getNodeHeight();
       if(node.getUserStory() != null && !node.getUserStory().equals("") ) {
-        String[] results = node.getUserStory().split("(?<=\\G.{" + 19 + "})");
+        String[] results = node.getUserStory().split("(?<=\\G.{" + 16 + "})");
         float adc = fontMetrics.getHeight()*(results.length + 1);
         height = (int) ((int) (NODE_HEIGHT + (int)adc) * getDpi());
       }
@@ -862,7 +862,7 @@ public class ActivityOnNodeUserStoryChart extends UserStoryChart {
 
       // Splits the user story according to the characters count (19 chars per line)
       if(node.getUserStory() != null && !node.getUserStory().equals("") ) {
-        String[] results = node.getUserStory().split("(?<=\\G.{" + 19 + "})");
+        String[] results = node.getUserStory().split("(?<=\\G.{" + 16 + "})");
 
         g.drawString("User Story" + ": ", x + getTextPaddingX(),
                 (int) (y + getTextPaddingY() + 5.3 * fontMetrics.getHeight()));

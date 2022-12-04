@@ -26,9 +26,12 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.sourceforge.ganttproject.GPLogger;
 import net.sourceforge.ganttproject.gui.TaskTreeUIFacade;
+import net.sourceforge.ganttproject.task.CustomColumnsManager;
 import net.sourceforge.ganttproject.task.Task;
 import net.sourceforge.ganttproject.task.TaskManager;
 import net.sourceforge.ganttproject.task.TaskManager.TaskBuilder;
+import net.sourceforge.ganttproject.userStory.UserStory;
+import net.sourceforge.ganttproject.userStory.UserStoryManager;
 import org.xml.sax.Attributes;
 
 import java.awt.*;
@@ -137,6 +140,12 @@ public class TaskTagHandler extends AbstractTagHandler implements ParsingListene
     if (taskType <= 5) {
       task.setTaskType(Task.TaskType.getTaskType(taskType));
     }
+
+    int taskUserStoryID = Integer.parseInt(attrs.getValue("taskUserStory"));
+    if (taskType == -2) {
+      task.setUserStory(null);
+    } else
+      task.setUserStory(new UserStory("%nrst00", taskUserStoryID, new UserStoryManager(new CustomColumnsManager())));
 
 
     String color = attrs.getValue("color");

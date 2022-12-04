@@ -1,0 +1,3 @@
+As a project manager, I want to be able to associate short descriptions to different colors so that I can color code each task and thus simplify task browsing.
+
+// As a project manager, I want to be able to filter which tasks I see according to the colors I select.
